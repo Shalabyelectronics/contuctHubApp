@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta property="og:title" content="What's For Dinner" />
+    <meta
+      property="og:description"
+      content="Your daily meal inspiration. Find random recipes, ingredients, and cooking instructions."
+    />
+    <meta
+      property="og:image"
+      content="https://shalabyelectronics.github.io/What-s-For-Dinner/images/Grilled_Salmon.jpg"
+    />
+    <meta property="og:url" content="https://shalabyelectronics.github.io" />
+    <meta property="og:type" content="website" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="What's For Dinner" />
+    <meta
+      name="twitter:description"
+      content="Your daily meal inspiration. Find random recipes, ingredients, and cooking instructions."
+    />
+    <meta
+      name="twitter:image"
+      content="https://shalabyelectronics.github.io/What-s-For-Dinner/images/Grilled_Salmon.jpg"
+    />
+    <link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="./css/bootstrap.min.css" />
+    <link rel="stylesheet" href="./css/all.min.css" />
+    <link rel="stylesheet" href="./css/style.css" />
+    <title>What's For Dinner</title>
+  </head>
+  <body>
+    <!-- Navbar start here -->
+    <nav
+      class="navbar custom-navbar custom-shadow navbar-expand-md flex-nowrap"
+    >
+      <div class="container gx-xl-5">
+        <div class="left-side navbar-brand">
+          <div
+            class="brand-container d-flex gap-2 justify-content-center align-items-center"
+          >
+            <div
+              class="brand-icon-wrapper d-flex justify-content-center align-items-center w-10 h-10 w-sm-11 h-sm-11 start-violet-color end-indigo-color linear-gradient-right bg-linear-gradient rounded-2"
+            >
+              <i class="fa-solid fa-address-book text-light"></i>
+            </div>
+            <div
+              class="brand-content d-flex flex-column justify-content-center gap-2"
+            >
+              <h1 class="brand-text fw-bolder black-color-500 pt-1">
+                Contact<span class="color-purple-700">Hub</span>
+              </h1>
+              <span class="fs-12-14 gray-color-300 d-none d-sm-block m-0 ps-1">
+                Smart Contact Manager
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex gap-2">
+          <button
+            data-bs-toggle="modal"
+            data-bs-target="#contactFormModal"
+            class="btn btn-add-contact d-flex justify-content-center align-items-center gap-1 px-16-20"
+          >
+            <i class="fas fa-plus fs-14"></i>
+            <span class="fs-14">Add</span>
+            <span class="fs-14 d-none d-sm-inline">contact</span>
+          </button>
+          <ul class="navbar-nav d-flex flex-row justify-content-center gap-2">
+            <li class="nav-item d-sm-flex d-none">
+              <a
+                class="nav-link d-flex justify-content-center align-items-center w-10 h-10 w-sm-11 h-sm-11 rounded-2 p-0 nav-icon"
+                href="#"
+              >
+                <i class="fas fa-bell fs-20"></i>
+              </a>
+            </li>
+            <li class="nav-item d-sm-flex d-none">
+              <a
+                class="nav-link d-flex justify-content-center align-items-center w-10 h-10 w-sm-11 h-sm-11 rounded-2 p-0 nav-icon"
+                href="#"
+              >
+                <i class="fas fa-gear fs-20"></i>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link d-flex justify-content-start align-items-center w-10 h-10 w-sm-11 h-sm-11 p-0"
+                href="#"
+              >
+                <div class="image-wrapper overflow-hidden rounded-2">
+                  <img
+                    class="w-100"
+                    src="./images/avatar-4.jpg"
+                    alt="user profile image"
+                  />
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!-- Navbar end here -->
+
+    <!-- Main start here -->
+    <main class="mt-5">
+      <!-- First section contains 3 contacts counter (Total), (Favorate) and (Emergency) -->
+      <section class="container gx-xl-5" id="contactsWidgetsCounter">
+        <div class="row">
+          <!-- Total Contacts -->
+          <div class="col-4">
+            <div class="inner">
+              <div
+                class="widget-box d-flex flex-column flex-sm-row align-items-center gap-2 border border-2 rounded-3 py-3 px-1 px-sm-2 px-md-3"
+              >
+                <div
+                  class="icon-wrapper w-11 h-11 w-sm-12 h-sm-12 flex-shrink-0 bg-linear-gradient linear-gradient-right start-blue-color end-blue-color rounded-2 d-flex justify-content-center align-items-center"
+                >
+                  <i class="fas fa-users text-light"></i>
+                </div>
+                <div class="content text-center text-sm-start">
+                  <h3
+                    class="m-0 fs-12-14 fw-semibold later-spacing-1 gray-color-200"
+                  >
+                    Total
+                  </h3>
+                  <span class="fw-bold fs-18-24 totalContacts">0</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Favorites Contacts  -->
+          <div class="col-4">
+            <div class="inner">
+              <div
+                class="widget-box d-flex flex-column flex-sm-row align-items-center gap-2 border border-2 rounded-3 py-3 px-1 px-sm-2 px-md-3"
+              >
+                <div
+                  class="icon-wrapper w-11 h-11 w-sm-12 h-sm-12 flex-shrink-0 bg-linear-gradient linear-gradient-right start-amber-color end-orange-color rounded-2 d-flex justify-content-center align-items-center"
+                >
+                  <i class="fas fa-star text-light"></i>
+                </div>
+                <div class="content text-center text-sm-start">
+                  <h3
+                    class="m-0 fs-12-14 fw-semibold later-spacing-1 gray-color-200"
+                  >
+                    Favorites
+                  </h3>
+                  <span class="fw-bold fs-18-24">0</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Emergency contatcs  -->
+          <div class="col-4">
+            <div class="inner">
+              <div
+                class="widget-box d-flex flex-column flex-sm-row align-items-center gap-2 border border-2 rounded-3 py-3 px-1 px-sm-2 px-md-3"
+              >
+                <div
+                  class="icon-wrapper w-11 h-11 w-sm-12 h-sm-12 flex-shrink-0 bg-linear-gradient linear-gradient-right start-blue-color end-blue-color rounded-2 d-flex justify-content-center align-items-center"
+                >
+                  <i class="fas fa-heart-pulse text-light"></i>
+                </div>
+                <div class="content text-center text-sm-start">
+                  <h3
+                    class="m-0 fs-12-14 fw-semibold gray-color-200 later-spacing-1"
+                  >
+                    Emergency
+                  </h3>
+                  <span class="fw-bold fs-18-24">0</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Second Section contains the search input, display contacts and favorate and emergency cards  -->
+      <section class="container gx-xl-5 mt-4" id="contactsWidgetSearch">
+        <div class="row gy-4">
+          <!-- First row title, description and search input -->
+
+          <!-- Search Component and display contacts -->
+          <div class="col-xl-8">
+            <h2>All Contacts</h2>
+            <p class="gray-color-300">
+              Manage and organize your
+              <span class="totalContacts">0</span> contacts
+            </p>
+            <div class="search-input-wrapper position-relative">
+              <input
+                type="search"
+                placeholder="Search by name, phone, or email..."
+                id="searchInput"
+                class="w-100 rounded-3 search-input"
+              />
+              <i class="fas fa-magnifying-glass search-icon gray-color-300"></i>
+            </div>
+            <!-- Next Display contacts cards or no contacts component if there are no contacts or when our search result is empty -->
+            <div class="row mt-4 gy-3">
+              <!-- We will show No contacts found component if there is no component or there are now results on search  -->
+              <div class="d-none" id="noContactsCom">
+                <div class="inner">
+                  <div
+                    class="no-contacts-box d-flex flex-column justify-content-center align-items-center py-4"
+                  >
+                    <div class="content">
+                      <div
+                        class="icon-wrapper d-flex justify-content-center align-items-center rounded-2 w-20 h-20 gray-bg-color-100 mb-2"
+                      >
+                        <i class="fas fa-address-book gray-color-300 fs-30"></i>
+                      </div>
+                    </div>
+                    <p class="m-0">No contacts found</p>
+                    <span class="gray-color-200 fs-14"
+                      >Click "Add Contact" to get started
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <!-- Contact Card Component -->
+              <div class="col-md-6">
+                <div class="inner">
+                  <div class="card contact-card">
+                    <div class="card-body">
+                      <!-- Card row one contains the contact image , name and number -->
+                      <div class="card-row-1">
+                        <div class="image-wrapper user-bg-9">
+                          <h3 class="text-light">MS</h3>
+                          <div class="contatct-img-badge favorate-img-badge">
+                            <i class="fas fa-star"></i>
+                          </div>
+                          <div class="contatct-img-badge emergency-img-badge">
+                            <i class="fas fa-heart-pulse"></i>
+                          </div>
+                        </div>
+                        <div class="name-and-number">
+                          <p class="m-0 contact-name" id="contactName">
+                            Mohamed Shalaby
+                          </p>
+                          <div class="contact-wrapper number">
+                            <div class="icon-wrapper call-icon">
+                              <i class="fas fa-phone"></i>
+                            </div>
+                            <span id="contactNum">01115839991</span>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- Card row two contains the contact email , address and note -->
+                      <div class="card-row-2">
+                        <!-- Email -->
+                        <div class="contact-wrapper email">
+                          <div class="icon-wrapper email-icon">
+                            <i class="fas fa-envelope"></i>
+                          </div>
+                          <span id="contactNum">shalabycode@gmail.com</span>
+                        </div>
+                        <!-- Address -->
+                        <div class="contact-wrapper email">
+                          <div class="icon-wrapper address-icon">
+                            <i class="fas fa-location-pin"></i>
+                          </div>
+                          <span id="contactNum">6th Octobar</span>
+                        </div>
+                        <!-- Note -->
+                        <div class="contact-wrapper email">
+                          <div class="icon-wrapper note-icon">
+                            <i class="fas fa-note-sticky"></i>
+                          </div>
+                          <span id="contactNum">This my phone number</span>
+                        </div>
+                      </div>
+                      <!-- Card row three contains all selected badges (5 badges from group option and emergeny badge and favorate badge) in general max badges are 3 only-->
+                      <div class="card-row-3">
+                        <div class="selected-badges d-flex gap-2 flex-wrap">
+                          <!-- Emergency optional badg -->
+                          <div class="icon-wrapper emergency-optional-badge">
+                            <i class="fas fa-heart-pulse"></i>
+                            <span>Emergency</span>
+                          </div>
+                          <!-- favorate optional badg -->
+                          <div class="icon-wrapper favorite-optional-badge">
+                            <i class="fas fa-star"></i>
+                            <span>Favorites</span>
+                          </div>
+                          <!-- Optional badges user will pick only one -->
+                          <div class="icon-wrapper family-badge">
+                            <i class="fas fa-heart"></i>
+                            <span>Family</span>
+                          </div>
+
+                          <div class="icon-wrapper friends-badge d-none">
+                            <i class="fas fa-user-group"></i>
+                            <span>Friends</span>
+                          </div>
+
+                          <div class="icon-wrapper work-badge d-none">
+                            <i class="fas fa-briefcase"></i>
+                            <span>Work</span>
+                          </div>
+
+                          <div class="icon-wrapper school-badge d-none">
+                            <i class="fas fa-graduation-cap"></i>
+                            <span>School</span>
+                          </div>
+
+                          <div class="icon-wrapper other-badge d-none">
+                            <i class="fas fa-layer-group"></i>
+                            <span>Other</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Now last row is the card footer where all actions take place as we can press on call btn to make a call or an email btn to send an email. Also we can add the contact to favorate and emergency contacts box finally we can edit or delete the contact -->
+                    <div
+                      class="card-footer d-flex justify-content-between flex-wrap"
+                    >
+                      <div class="call-email-action d-flex gap-2">
+                        <button
+                          class="btn action-btn icon-wrapper action-call-icon"
+                        >
+                          <i class="fas fa-phone"></i>
+                        </button>
+                        <button class="btn action-btn icon-wrapper email-icon">
+                          <i class="fas fa-envelope"></i>
+                        </button>
+                      </div>
+                      <div class="other-action d-flex gap-2">
+                        <button
+                          class="btn action-btn icon-wrapper action-favorite-icon active-action"
+                        >
+                          <i class="fas fa-star"></i>
+                        </button>
+                        <button
+                          class="btn action-btn icon-wrapper emergency-action-icon active-action"
+                        >
+                          <i class="fas fa-heart-pulse"></i>
+                        </button>
+                        <button
+                          type="button"
+                          data-bs-toggle="modal"
+                          data-bs-target="#contactFormModal"
+                          class="btn action-btn icon-wrapper edit-action-icon"
+                        >
+                          <i class="fas fa-pen"></i>
+                        </button>
+                        <button
+                          type="button"
+                          class="btn action-btn icon-wrapper delete-action-icon"
+                          data-bs-toggle="modal"
+                          data-bs-target="#deletionComfermation"
+                        >
+                          <i class="fas fa-trash"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Contact Card Component -->
+              <div class="col-md-6">
+                <div class="inner">
+                  <div class="card contact-card">
+                    <div class="card-body">
+                      <!-- Card row one contains the contact image , name and number -->
+                      <div class="card-row-1">
+                        <div class="image-wrapper user-bg-9">
+                          <h3 class="text-light">MS</h3>
+                          <div class="contatct-img-badge favorate-img-badge">
+                            <i class="fas fa-star"></i>
+                          </div>
+                          <div class="contatct-img-badge emergency-img-badge">
+                            <i class="fas fa-heart-pulse"></i>
+                          </div>
+                        </div>
+                        <div class="name-and-number">
+                          <p class="m-0 contact-name" id="contactName">
+                            Mohamed Shalaby
+                          </p>
+                          <div class="contact-wrapper number">
+                            <div class="icon-wrapper call-icon">
+                              <i class="fas fa-phone"></i>
+                            </div>
+                            <span id="contactNum">01115839991</span>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- Card row two contains the contact email , address and note -->
+                      <div class="card-row-2">
+                        <!-- Email -->
+                        <div class="contact-wrapper email">
+                          <div class="icon-wrapper email-icon">
+                            <i class="fas fa-envelope"></i>
+                          </div>
+                          <span id="contactNum">shalabycode@gmail.com</span>
+                        </div>
+                        <!-- Address -->
+                        <div class="contact-wrapper email">
+                          <div class="icon-wrapper address-icon">
+                            <i class="fas fa-location-pin"></i>
+                          </div>
+                          <span id="contactNum">6th Octobar</span>
+                        </div>
+                        <!-- Note -->
+                        <div class="contact-wrapper email">
+                          <div class="icon-wrapper note-icon">
+                            <i class="fas fa-note-sticky"></i>
+                          </div>
+                          <span id="contactNum">This my phone number</span>
+                        </div>
+                      </div>
+                      <!-- Card row three contains all selected badges (5 badges from group option and emergeny badge and favorate badge) in general max badges are 3 only-->
+                      <div class="card-row-3">
+                        <div class="selected-badges d-flex gap-2 flex-wrap">
+                          <!-- Emergency optional badg -->
+                          <div class="icon-wrapper emergency-optional-badge">
+                            <i class="fas fa-heart-pulse"></i>
+                            <span>Emergency</span>
+                          </div>
+                          <!-- favorate optional badg -->
+                          <div class="icon-wrapper favorite-optional-badge">
+                            <i class="fas fa-star"></i>
+                            <span>Favorites</span>
+                          </div>
+                          <!-- Optional badges user will pick only one -->
+                          <div class="icon-wrapper family-badge">
+                            <i class="fas fa-heart"></i>
+                            <span>Family</span>
+                          </div>
+
+                          <div class="icon-wrapper friends-badge d-none">
+                            <i class="fas fa-user-group"></i>
+                            <span>Friends</span>
+                          </div>
+
+                          <div class="icon-wrapper work-badge d-none">
+                            <i class="fas fa-briefcase"></i>
+                            <span>Work</span>
+                          </div>
+
+                          <div class="icon-wrapper school-badge d-none">
+                            <i class="fas fa-graduation-cap"></i>
+                            <span>School</span>
+                          </div>
+
+                          <div class="icon-wrapper other-badge d-none">
+                            <i class="fas fa-layer-group"></i>
+                            <span>Other</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Now last row is the card footer where all actions take place as we can press on call btn to make a call or an email btn to send an email. Also we can add the contact to favorate and emergency contacts box finally we can edit or delete the contact -->
+                    <div
+                      class="card-footer d-flex justify-content-between flex-wrap"
+                    >
+                      <div class="call-email-action d-flex gap-2">
+                        <button
+                          class="btn action-btn icon-wrapper action-call-icon"
+                        >
+                          <i class="fas fa-phone"></i>
+                        </button>
+                        <button class="btn action-btn icon-wrapper email-icon">
+                          <i class="fas fa-envelope"></i>
+                        </button>
+                      </div>
+                      <div class="other-action d-flex gap-2">
+                        <button
+                          class="btn action-btn icon-wrapper action-favorite-icon active-action"
+                        >
+                          <i class="fas fa-star"></i>
+                        </button>
+                        <button
+                          class="btn action-btn icon-wrapper emergency-action-icon active-action"
+                        >
+                          <i class="fas fa-heart-pulse"></i>
+                        </button>
+                        <button
+                          class="btn action-btn icon-wrapper edit-action-icon"
+                        >
+                          <i class="fas fa-pen"></i>
+                        </button>
+                        <button
+                          class="btn action-btn icon-wrapper delete-action-icon"
+                        >
+                          <i class="fas fa-trash"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Emergency and Favorate contacts cards -->
+          <div class="col-xl-4">
+            <div class="inner">
+              <div class="aside-container">
+                <!-- Favorate card  -->
+                <div class="card favorate-card mb-xl-3">
+                  <div
+                    class="card-header d-flex align-items-start gap-2 p-3 orange-bg-100"
+                  >
+                    <div
+                      class="icon-wrapper w-9 h-9 flex-shrink-0 bg-linear-gradient linear-gradient-right start-amber-color end-orange-color rounded-2 d-flex justify-content-center align-items-center"
+                    >
+                      <i class="fas fa-star text-light"></i>
+                    </div>
+                    <div class="card-title m-0">
+                      <h3 class="m-0 fs-6 fw-semibold">Favorites</h3>
+                      <span class="fs-14 gray-color-300"
+                        >Quick access to starred contacts
+                      </span>
+                    </div>
+                  </div>
+                  <div class="card-body favorate-card-body">
+                    <div class="inner">
+                      <ul class="list-group favorate-list">
+                        <li class="list-group-item">
+                          <!-- Start -->
+                          <div class="card-row-1">
+                            <div class="left-side">
+                              <div class="image-wrapper user-bg-9">
+                                <h3 class="text-light">MS</h3>
+                              </div>
+                              <div class="name-and-number">
+                                <p class="m-0 contact-name" id="contactName">
+                                  Mohamed Shalaby
+                                </p>
+                                <div class="contact-wrapper number">
+                                  <span id="contactNum" class="contact-number"
+                                    >01115839991</span
+                                  >
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="icon-wrapper call-icon-green">
+                              <i class="fas fa-phone"></i>
+                            </div>
+                          </div>
+                          <!-- End -->
+                        </li>
+                        <li class="list-group-item">
+                          <!-- Start -->
+                          <div class="card-row-1">
+                            <div class="left-side">
+                              <div class="image-wrapper user-bg-9">
+                                <h3 class="text-light">MS</h3>
+                              </div>
+                              <div class="name-and-number">
+                                <p class="m-0 contact-name" id="contactName">
+                                  Mohamed Shalaby
+                                </p>
+                                <div class="contact-wrapper number">
+                                  <span id="contactNum" class="contact-number"
+                                    >01115839991</span
+                                  >
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="icon-wrapper call-icon-green">
+                              <i class="fas fa-phone"></i>
+                            </div>
+                          </div>
+                          <!-- End -->
+                        </li>
+                        <li class="list-group-item">
+                          <!-- Start -->
+                          <div class="card-row-1">
+                            <div class="left-side">
+                              <div class="image-wrapper user-bg-9">
+                                <h3 class="text-light">MS</h3>
+                              </div>
+                              <div class="name-and-number">
+                                <p class="m-0 contact-name" id="contactName">
+                                  Mohamed Shalaby
+                                </p>
+                                <div class="contact-wrapper number">
+                                  <span id="contactNum" class="contact-number"
+                                    >01115839991</span
+                                  >
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="icon-wrapper call-icon-green">
+                              <i class="fas fa-phone"></i>
+                            </div>
+                          </div>
+                          <!-- End -->
+                        </li>
+                        <li class="list-group-item">
+                          <!-- Start -->
+                          <div class="card-row-1">
+                            <div class="left-side">
+                              <div class="image-wrapper user-bg-9">
+                                <h3 class="text-light">MS</h3>
+                              </div>
+                              <div class="name-and-number">
+                                <p class="m-0 contact-name" id="contactName">
+                                  Mohamed Shalaby
+                                </p>
+                                <div class="contact-wrapper number">
+                                  <span id="contactNum" class="contact-number"
+                                    >01115839991</span
+                                  >
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="icon-wrapper call-icon-green">
+                              <i class="fas fa-phone"></i>
+                            </div>
+                          </div>
+                          <!-- End -->
+                        </li>
+                        <li class="list-group-item">
+                          <!-- Start -->
+                          <div class="card-row-1">
+                            <div class="left-side">
+                              <div class="image-wrapper user-bg-9">
+                                <h3 class="text-light">MS</h3>
+                              </div>
+                              <div class="name-and-number">
+                                <p class="m-0 contact-name" id="contactName">
+                                  Mohamed Shalaby
+                                </p>
+                                <div class="contact-wrapper number">
+                                  <span id="contactNum" class="contact-number"
+                                    >01115839991</span
+                                  >
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="icon-wrapper call-icon-green">
+                              <i class="fas fa-phone"></i>
+                            </div>
+                          </div>
+                          <!-- End -->
+                        </li>
+                        <li class="list-group-item">
+                          <!-- Start -->
+                          <div class="card-row-1">
+                            <div class="left-side">
+                              <div class="image-wrapper user-bg-9">
+                                <h3 class="text-light">MS</h3>
+                              </div>
+                              <div class="name-and-number">
+                                <p class="m-0 contact-name" id="contactName">
+                                  Mohamed Shalaby
+                                </p>
+                                <div class="contact-wrapper number">
+                                  <span id="contactNum" class="contact-number"
+                                    >01115839991</span
+                                  >
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="icon-wrapper call-icon-green">
+                              <i class="fas fa-phone"></i>
+                            </div>
+                          </div>
+                          <!-- End -->
+                        </li>
+                        <li class="list-group-item">
+                          <!-- Start -->
+                          <div class="card-row-1">
+                            <div class="left-side">
+                              <div class="image-wrapper user-bg-9">
+                                <h3 class="text-light">MS</h3>
+                              </div>
+                              <div class="name-and-number">
+                                <p class="m-0 contact-name" id="contactName">
+                                  Mohamed Shalaby
+                                </p>
+                                <div class="contact-wrapper number">
+                                  <span id="contactNum" class="contact-number"
+                                    >01115839991</span
+                                  >
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="icon-wrapper call-icon-green">
+                              <i class="fas fa-phone"></i>
+                            </div>
+                          </div>
+                          <!-- End -->
+                        </li>
+                        <li class="list-group-item">
+                          <!-- Start -->
+                          <div class="card-row-1">
+                            <div class="left-side">
+                              <div class="image-wrapper user-bg-9">
+                                <h3 class="text-light">MS</h3>
+                              </div>
+                              <div class="name-and-number">
+                                <p class="m-0 contact-name" id="contactName">
+                                  Mohamed Shalaby
+                                </p>
+                                <div class="contact-wrapper number">
+                                  <span id="contactNum" class="contact-number"
+                                    >01115839991</span
+                                  >
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="icon-wrapper call-icon-green">
+                              <i class="fas fa-phone"></i>
+                            </div>
+                          </div>
+                          <!-- End -->
+                        </li>
+                        <li class="list-group-item">
+                          <!-- Start -->
+                          <div class="card-row-1">
+                            <div class="left-side">
+                              <div class="image-wrapper user-bg-9">
+                                <h3 class="text-light">MS</h3>
+                              </div>
+                              <div class="name-and-number">
+                                <p class="m-0 contact-name" id="contactName">
+                                  Mohamed Shalaby
+                                </p>
+                                <div class="contact-wrapper number">
+                                  <span id="contactNum" class="contact-number"
+                                    >01115839991</span
+                                  >
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="icon-wrapper call-icon-green">
+                              <i class="fas fa-phone"></i>
+                            </div>
+                          </div>
+                          <!-- End -->
+                        </li>
+                        <li class="list-group-item">
+                          <!-- Start -->
+                          <div class="card-row-1">
+                            <div class="left-side">
+                              <div class="image-wrapper user-bg-9">
+                                <h3 class="text-light">MS</h3>
+                              </div>
+                              <div class="name-and-number">
+                                <p class="m-0 contact-name" id="contactName">
+                                  Mohamed Shalaby
+                                </p>
+                                <div class="contact-wrapper number">
+                                  <span id="contactNum" class="contact-number"
+                                    >01115839991</span
+                                  >
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="icon-wrapper call-icon-green">
+                              <i class="fas fa-phone"></i>
+                            </div>
+                          </div>
+                          <!-- End -->
+                        </li>
+                        <li class="list-group-item">
+                          <!-- Start -->
+                          <div class="card-row-1">
+                            <div class="left-side">
+                              <div class="image-wrapper user-bg-9">
+                                <h3 class="text-light">MS</h3>
+                              </div>
+                              <div class="name-and-number">
+                                <p class="m-0 contact-name" id="contactName">
+                                  Mohamed Shalaby
+                                </p>
+                                <div class="contact-wrapper number">
+                                  <span id="contactNum" class="contact-number"
+                                    >01115839991</span
+                                  >
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="icon-wrapper call-icon-green">
+                              <i class="fas fa-phone"></i>
+                            </div>
+                          </div>
+                          <!-- End -->
+                        </li>
+                        <li class="list-group-item">
+                          <!-- Start -->
+                          <div class="card-row-1">
+                            <div class="left-side">
+                              <div class="image-wrapper user-bg-9">
+                                <h3 class="text-light">MS</h3>
+                              </div>
+                              <div class="name-and-number">
+                                <p class="m-0 contact-name" id="contactName">
+                                  Mohamed Shalaby
+                                </p>
+                                <div class="contact-wrapper number">
+                                  <span id="contactNum" class="contact-number"
+                                    >01115839991</span
+                                  >
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="icon-wrapper call-icon-green">
+                              <i class="fas fa-phone"></i>
+                            </div>
+                          </div>
+                          <!-- End -->
+                        </li>
+                        <li class="list-group-item">
+                          <!-- Start -->
+                          <div class="card-row-1">
+                            <div class="left-side">
+                              <div class="image-wrapper user-bg-9">
+                                <h3 class="text-light">MS</h3>
+                              </div>
+                              <div class="name-and-number">
+                                <p class="m-0 contact-name" id="contactName">
+                                  Mohamed Shalaby
+                                </p>
+                                <div class="contact-wrapper number">
+                                  <span id="contactNum" class="contact-number"
+                                    >01115839991</span
+                                  >
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="icon-wrapper call-icon-green">
+                              <i class="fas fa-phone"></i>
+                            </div>
+                          </div>
+                          <!-- End -->
+                        </li>
+                        <li class="list-group-item">
+                          <!-- Start -->
+                          <div class="card-row-1">
+                            <div class="left-side">
+                              <div class="image-wrapper user-bg-9">
+                                <h3 class="text-light">MS</h3>
+                              </div>
+                              <div class="name-and-number">
+                                <p class="m-0 contact-name" id="contactName">
+                                  Mohamed Shalaby
+                                </p>
+                                <div class="contact-wrapper number">
+                                  <span id="contactNum" class="contact-number"
+                                    >01115839991</span
+                                  >
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="icon-wrapper call-icon-green">
+                              <i class="fas fa-phone"></i>
+                            </div>
+                          </div>
+                          <!-- End -->
+                        </li>
+                        <li class="list-group-item">
+                          <!-- Start -->
+                          <div class="card-row-1">
+                            <div class="left-side">
+                              <div class="image-wrapper user-bg-9">
+                                <h3 class="text-light">MS</h3>
+                              </div>
+                              <div class="name-and-number">
+                                <p class="m-0 contact-name" id="contactName">
+                                  Mohamed Shalaby
+                                </p>
+                                <div class="contact-wrapper number">
+                                  <span id="contactNum" class="contact-number"
+                                    >01115839991</span
+                                  >
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="icon-wrapper call-icon-green">
+                              <i class="fas fa-phone"></i>
+                            </div>
+                          </div>
+                          <!-- End -->
+                        </li>
+                        <li class="list-group-item">
+                          <!-- Start -->
+                          <div class="card-row-1">
+                            <div class="left-side">
+                              <div class="image-wrapper user-bg-9">
+                                <h3 class="text-light">MS</h3>
+                              </div>
+                              <div class="name-and-number">
+                                <p class="m-0 contact-name" id="contactName">
+                                  Mohamed Shalaby
+                                </p>
+                                <div class="contact-wrapper number">
+                                  <span id="contactNum" class="contact-number"
+                                    >01115839991</span
+                                  >
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="icon-wrapper call-icon-green">
+                              <i class="fas fa-phone"></i>
+                            </div>
+                          </div>
+                          <!-- End -->
+                        </li>
+                        <li class="list-group-item">
+                          <!-- Start -->
+                          <div class="card-row-1">
+                            <div class="left-side">
+                              <div class="image-wrapper user-bg-9">
+                                <h3 class="text-light">MS</h3>
+                              </div>
+                              <div class="name-and-number">
+                                <p class="m-0 contact-name" id="contactName">
+                                  Mohamed Shalaby
+                                </p>
+                                <div class="contact-wrapper number">
+                                  <span id="contactNum" class="contact-number"
+                                    >01115839991</span
+                                  >
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="icon-wrapper call-icon-green">
+                              <i class="fas fa-phone"></i>
+                            </div>
+                          </div>
+                          <!-- End -->
+                        </li>
+                        <li class="list-group-item">
+                          <!-- Start -->
+                          <div class="card-row-1">
+                            <div class="left-side">
+                              <div class="image-wrapper user-bg-9">
+                                <h3 class="text-light">MS</h3>
+                              </div>
+                              <div class="name-and-number">
+                                <p class="m-0 contact-name" id="contactName">
+                                  Mohamed Shalaby
+                                </p>
+                                <div class="contact-wrapper number">
+                                  <span id="contactNum" class="contact-number"
+                                    >01115839991</span
+                                  >
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="icon-wrapper call-icon-green">
+                              <i class="fas fa-phone"></i>
+                            </div>
+                          </div>
+                          <!-- End -->
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <!-- Emergency card -->
+                <div class="card emergency-card">
+                  <div
+                    class="card-header d-flex align-items-start gap-2 p-3 orange-bg-100"
+                  >
+                    <div
+                      class="icon-wrapper w-9 h-9 flex-shrink-0 bg-linear-gradient linear-gradient-right start-amber-color end-orange-color rounded-2 d-flex justify-content-center align-items-center"
+                    >
+                      <i class="fas fa-star text-light"></i>
+                    </div>
+                    <div class="card-title m-0">
+                      <h3 class="m-0 fs-6 fw-semibold">Favorites</h3>
+                      <span class="fs-14 gray-color-300"
+                        >Quick access to starred contacts
+                      </span>
+                    </div>
+                  </div>
+                  <div class="card-body emergency-card-body">
+                    <div class="inner">
+                      <ul class="list-group emergency-list">
+                        <li class="list-group-item">
+                          <!-- Start -->
+                          <div class="card-row-1">
+                            <div class="left-side">
+                              <div class="image-wrapper user-bg-9">
+                                <h3 class="text-light">MS</h3>
+                              </div>
+                              <div class="name-and-number">
+                                <p class="m-0 contact-name" id="contactName">
+                                  Mohamed Shalaby
+                                </p>
+                                <div class="contact-wrapper number">
+                                  <span id="contactNum" class="contact-number"
+                                    >01115839991</span
+                                  >
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="icon-wrapper call-icon-red">
+                              <i class="fas fa-phone"></i>
+                            </div>
+                          </div>
+                          <!-- End -->
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Now We are going to create the pop-up form where user add or edit his contact number -->
+      <section id="contactForm ">
+        <div
+          class="modal fade"
+          id="contactFormModal"
+          tabindex="-1"
+          aria-labelledby="contactFormModalLabel"
+          aria-hidden="true"
+        >
+          <div
+            class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+          >
+            <div class="modal-content">
+              <div
+                class="modal-header d-flex justify-content-between align-items-center px-4 py-3"
+              >
+                <div class="card-title">
+                  <h2 class="fs-20 m-0 modal-title" id="contactFormModalLabel">
+                    Add New Contact
+                  </h2>
+                </div>
+                <button
+                  class="icon-wrapper close-btn close-btn-icon"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <i class="fas fa-close"></i>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div
+                  class="user-image-container d-flex flex-column align-items-center gap-3"
+                >
+                  <div class="image-wrapper">
+                    <i class="fas fa-user"></i>
+                  </div>
+                  <button class="btn btn-light fs-14">
+                    <i class="fas fa-camera"></i>
+                    Change photo
+                  </button>
+                </div>
+                <div class="input-wrpper">
+                  <label for="fullName" class="mb-1"
+                    >Full Name<span class="text-danger">*</span></label
+                  >
+                  <input
+                    type="text"
+                    id="fullName"
+                    class="custom-input form-control"
+                    placeholder="Enter full name"
+                    required
+                  />
+                </div>
+                <div class="input-wrpper">
+                  <label for="phoneNum" class="mb-1"
+                    >Phone Number<span class="text-danger">*</span></label
+                  >
+                  <input
+                    type="text"
+                    id="phoneNum"
+                    class="custom-input form-control"
+                    placeholder="e.g., 01012345678"
+                    required
+                  />
+                </div>
+                <div class="input-wrpper">
+                  <label for="email" class="mb-1">Email Address</label>
+                  <input
+                    type="email"
+                    id="email"
+                    class="custom-input form-control"
+                    placeholder="name@example.com"
+                  />
+                </div>
+                <div class="input-wrpper">
+                  <label for="address" class="mb-1">Address</label>
+                  <input
+                    type="text"
+                    id="address"
+                    class="custom-input form-control"
+                    placeholder="Enter Address"
+                  />
+                </div>
+                <div class="input-wrpper">
+                  <label for="group" class="mb-1">Group</label>
+                  <select
+                    name="group"
+                    id="group"
+                    class="custom-input form-control"
+                  >
+                    <option value="" selected>Select a group</option>
+                    <option value="family">Family</option>
+                    <option value="friends">Friends</option>
+                    <option value="work">Work</option>
+                    <option value="school">School</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+                <div class="input-wrapper">
+                  <label for="notes" class="d-block mb-1">Notes</label>
+                  <textarea
+                    name="notes"
+                    id="notes"
+                    class="custom-input form-control"
+                    placeholder="Write a notes."
+                  ></textarea>
+                </div>
+                <div class="input-wrapper d-flex gap-3 align-items-center">
+                  <div
+                    class="is-favorate form-check d-flex gap-1 align-items-center"
+                  >
+                    <input
+                      type="checkbox"
+                      name="favorate"
+                      id="favorateContact"
+                      class="form-check-input"
+                    />
+                    <label for="favorateContact" class="form-check-label fs-14">
+                      <i class="fas fa-star fs-16 yellow-color-500"></i>
+                      Favorate</label
+                    >
+                  </div>
+                  <div
+                    class="is-emergency d-flex gap-1 align-items-center form-check"
+                  >
+                    <input
+                      type="checkbox"
+                      name="emergency"
+                      id="emergencyContact"
+                      class="form-check-input"
+                    />
+                    <label
+                      for="emergencyContact"
+                      class="form-check-label fs-14"
+                    >
+                      <i class="fas fa-heart-pulse fs-16 red-color-500"></i
+                      >Emergency</label
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer buttons-wrapper d-flex gap-3">
+                <button
+                  type="button"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                  class="btn btn-light fs-14 flex-grow-1 fw-semibold py-2 px-3"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  data-bs-toggle="modal"
+                  data-bs-target="#inputError"
+                  class="btn btn-add-contact flex-grow-1 fw-semibold fs-14 py-2 px-3"
+                >
+                  <i class="fas fa-check"></i>
+                  Save Contact
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- There is another modal appear when contact added succefully -->
+        <!-- There is another modal when comformation done -->
+        <div
+          class="modal fade"
+          id="contactAddedSuccessfully"
+          tabindex="-1"
+          aria-labelledby="contactAddedSuccessfullyLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div
+                class="modal-body d-flex flex-column justify-content-center align-items-center gap-3"
+              >
+                <div class="icon-wrapper">
+                  <i
+                    class="fa-6x fa-regular fa-circle-check fa-shake green-color-600"
+                    style="
+                      --fa-animation-duration: 3s;
+                      --fa-animation-iteration-count: 1;
+                      --fa-animation-timing: ease-in-out;
+                    "
+                  ></i>
+                </div>
+                <h5 class="fs-30 fw-bold gray-color-400">Added</h5>
+
+                <p class="text-center gray-color-300">
+                  Contact has been Added succefully.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Finally there is one error modal when user didn't write a name or a phone number -->
+        <div
+          class="modal fade"
+          id="inputError"
+          tabindex="-1"
+          aria-labelledby="inputErrorLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div
+                class="modal-body d-flex flex-column justify-content-center align-items-center gap-3"
+              >
+                <div class="icon-wrapper">
+                  <i
+                    class="fa-6x fa-regular fa-circle-xmark fa-shake red-color-600"
+                    style="
+                      --fa-animation-duration: 3s;
+                      --fa-animation-iteration-count: 1;
+                      --fa-animation-timing: ease-in-out;
+                    "
+                  ></i>
+                </div>
+                <h5 class="fs-30 fw-bold gray-color-400">Error MSG</h5>
+
+                <p class="text-center gray-color-300">
+                  As the error write your message here.
+                </p>
+
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-toggle="modal"
+                  data-bs-target="#contactFormModal"
+                >
+                  OK
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Below is delete pop-up modal appear for deletion comformation -->
+      <section id="deletionComformation " class="">
+        <!--Deletion comformation Modal -->
+        <div
+          class="modal fade"
+          id="deletionComfermation"
+          tabindex="-1"
+          aria-labelledby="deletionComfermationLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div
+                class="modal-body d-flex flex-column justify-content-center align-items-center gap-3"
+              >
+                <div class="icon-wrapper">
+                  <i
+                    class="fa-6x fa-solid fa-circle-exclamation fa-shake yellow-color-500"
+                    style="
+                      --fa-animation-duration: 3s;
+                      --fa-animation-iteration-count: 1;
+                      --fa-animation-timing: ease-in-out;
+                    "
+                  ></i>
+                </div>
+                <h5 class="fs-30 fw-bold gray-color-400">Delete Contact?</h5>
+
+                <p class="text-center gray-color-300">
+                  Are you sure you want to delete <span>Mohamed Shalaby</span> ?
+                  This action cannot be undone.
+                </p>
+              </div>
+              <div class="modal-footer d-flex justify-content-center">
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  data-bs-toggle="modal"
+                  data-bs-target="#deletionComfiemed"
+                >
+                  Yes, delete it!
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Cancel!
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- There is another modal when comformation done -->
+        <div
+          class="modal fade"
+          id="deletionComfiemed"
+          tabindex="-1"
+          aria-labelledby="deletionComfiemedLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div
+                class="modal-body d-flex flex-column justify-content-center align-items-center gap-3"
+              >
+                <div class="icon-wrapper">
+                  <i
+                    class="fa-6x fa-regular fa-circle-check fa-shake green-color-600"
+                    style="
+                      --fa-animation-duration: 3s;
+                      --fa-animation-iteration-count: 1;
+                      --fa-animation-timing: ease-in-out;
+                    "
+                  ></i>
+                </div>
+                <h5 class="fs-30 fw-bold gray-color-400">Deleted</h5>
+
+                <p class="text-center gray-color-300">
+                  Contact has been deleted.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- Test Section -->
+    <section class="testing d-none">
+      <button
+        type="button"
+        class="btn btn-primary"
+        data-bs-toggle="modal"
+        data-bs-target="#exampleModal"
+        data-bs-whatever="@mdo"
+      >
+        Open modal for @mdo
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary"
+        data-bs-toggle="modal"
+        data-bs-target="#exampleModal"
+        data-bs-whatever="@fat"
+      >
+        Open modal for @fat
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary"
+        data-bs-toggle="modal"
+        data-bs-target="#exampleModal"
+        data-bs-whatever="@getbootstrap"
+      >
+        Open modal for @getbootstrap
+      </button>
+
+      <div
+        class="modal fade"
+        id="exampleModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">
+                New message
+              </h1>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="mb-3">
+                  <label for="recipient-name" class="col-form-label"
+                    >Recipient:</label
+                  >
+                  <input type="text" class="form-control" id="recipient-name" />
+                </div>
+                <div class="mb-3">
+                  <label for="message-text" class="col-form-label"
+                    >Message:</label
+                  >
+                  <textarea class="form-control" id="message-text"></textarea>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button type="button" class="btn btn-primary">
+                Send message
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- End testing -->
+    <!-- Main end here -->
+    <script src="./js/bootstrap.bundle.min.js"></script>
+    <script src="./js/index.js" defer></script>
+  </body>
+</html>
