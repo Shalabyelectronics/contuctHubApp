@@ -482,12 +482,18 @@
                           <i class="fas fa-heart-pulse"></i>
                         </button>
                         <button
+                          type="button"
+                          data-bs-toggle="modal"
+                          data-bs-target="#contactFormModal"
                           class="btn action-btn icon-wrapper edit-action-icon"
                         >
                           <i class="fas fa-pen"></i>
                         </button>
                         <button
+                          type="button"
                           class="btn action-btn icon-wrapper delete-action-icon"
+                          data-bs-toggle="modal"
+                          data-bs-target="#deletionComfermation"
                         >
                           <i class="fas fa-trash"></i>
                         </button>
@@ -496,6 +502,7 @@
                   </div>
                 </div>
               </div>
+        
             </div>
           </div>
           <!-- Emergency and Favorate contacts cards -->
@@ -1047,9 +1054,10 @@
                 class="modal-header d-flex justify-content-between align-items-center px-4 py-3"
               >
                 <div class="card-title">
-                  <h2 class="fs-20 m-0 modal-title" id="contactFormModalLabel">
-                    Add New Contact
-                  </h2>
+                  <h2
+                    class="fs-20 fw-semibold m-0 modal-title"
+                    id="contactFormModalLabel"
+                  ></h2>
                 </div>
                 <button
                   class="icon-wrapper close-btn close-btn-icon"
