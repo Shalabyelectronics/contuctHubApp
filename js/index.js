@@ -2,13 +2,25 @@
 var addNewContactBtn = document.querySelector(".btn-add-contact");
 // Select contact Modal component
 var contactFormModal = document.querySelector("#contactFormModal");
+
+// addedSuccessfullyModal id
+var addedSuccessfullyModalID = "#contactAddedSuccessfully";
+// Error Modal ID
+var errorModalID = "#inputErrorModal";
+
+// addedSuccessfullyModal element
+var addedSuccessfullyModalEle = document.querySelector(
+  addedSuccessfullyModalID
+);
+var errorModalEle = document.querySelector(errorModalID);
+
 // I'm going to use this variable when all form is valid
 var validationResults = {
-  fullName: null,
-  phoneNum: null,
-  email: null,
-  address: null,
-  notes: null,
+  fullName: false,
+  phoneNum: false,
+  email: false,
+  address: false,
+  notes: false,
 };
 
 var contactObject = {
@@ -18,6 +30,61 @@ var contactObject = {
   address: null,
   notes: null,
 };
+
+// Get inputs values when user click on save contact button it will check first if its validate if yes will show contact successfully added otherwise it will show another modal that contain if there is an error on validation or later if the number is dublicated.
+
+// 1- I will create a function that will check if all text inputs are valid by checking the validationResults object if all true it will return and object contain status object if all passed or what is the first false input
+
+function isAllTextInputsValid() {
+  if (!validationResults.fullName) {
+    return {
+      status: "validation faild",
+      faildOn: "fullName",
+      errorMsgTitle: "Full name Error",
+      errorMsgDes: "Please, check your full name!",
+    };
+  } else if (!validationResults.phoneNum) {
+    return {
+      status: "validation faild",
+      faildOn: "phoneNum",
+      errorMsgTitle: "Phone number Error",
+      errorMsgDes: "Please, check your phone number!",
+    };
+  } else if (!validationResults.email) {
+    return {
+      status: "validation faild",
+      faildOn: "email",
+      errorMsgTitle: "Email Error",
+      errorMsgDes: "Please, check your Email!",
+    };
+  } else {
+    return { status: "validation passed" };
+  }
+}
+// 2- Second I want to get that object from isAllTextInputValid and use it to edit on data-bs-target first I want it basic just when click on the save contact btn I want to show me what value inside the data-bs-target
+// select the save contact button
+var saveContactBtn = document.querySelector("#saveContactBtn");
+
+// attached an event lestinner to save contact button to check is all text input valid
+function setModalBasedValidation() {
+  var validationStatusObj = isAllTextInputsValid();
+  if (validationStatusObj.status === "validation passed") {
+    saveContactBtn.setAttribute("data-bs-target", addedSuccessfullyModalID);
+  } else if (validationStatusObj.status === "validation faild") {
+    saveContactBtn.setAttribute("data-bs-target", errorModalID);
+    errorModalEle.querySelector("#errorMsgTitle").textContent =
+      validationStatusObj.errorMsgTitle;
+    errorModalEle.querySelector("#errorMsgDes").textContent =
+      validationStatusObj.errorMsgDes;
+  }
+  return validationStatusObj;
+}
+
+function setErrorMsgBasedInput(inputEle) {
+  document
+    .querySelector(`#${inputEle}`)
+    .nextElementSibling.classList.replace("valid", "in-valid");
+}
 
 // validat contact form input function description inside
 function validateContactFormInput() {
@@ -47,6 +114,7 @@ This function will work one time only when the page load and it will select all 
         e.target.nextElementSibling.classList.replace("valid", "in-valid");
         validationResults[e.target.id] = false;
       }
+      setModalBasedValidation();
     });
   }
 }
@@ -67,3 +135,7 @@ editContactFormModalTitle(addNewContactBtn, "Add New Contact");
 
 // Assign event listener for contact form Text inputs (fullName,phoneNum,email,address,notes);
 validateContactFormInput();
+
+addNewContactBtn.addEventListener("click", function () {
+  var validationStatusObj = setModalBasedValidation();
+});

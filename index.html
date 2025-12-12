@@ -1159,8 +1159,8 @@
                     placeholder="Write a notes."
                   ></textarea>
                   <span class="mt-2 ml-2 fs-14 text-danger valid"
-                    >Notes may start with char or digit with some spicail
-                    chars like . - , / ? ...</span
+                    >Notes may start with char or digit with some spicail chars
+                    like . - , / ? ...</span
                   >
                 </div>
                 <div class="input-wrapper d-flex gap-3 align-items-center">
@@ -1207,9 +1207,10 @@
                   Cancel
                 </button>
                 <button
+                  id="saveContactBtn"
                   type="button"
                   data-bs-toggle="modal"
-                  data-bs-target="#inputError"
+                  data-bs-target="#inputErrorModal"
                   class="btn btn-add-contact flex-grow-1 fw-semibold fs-14 py-2 px-3"
                 >
                   <i class="fas fa-check"></i>
@@ -1255,9 +1256,9 @@
         <!-- Finally there is one error modal when user didn't write a name or a phone number -->
         <div
           class="modal fade"
-          id="inputError"
+          id="inputErrorModal"
           tabindex="-1"
-          aria-labelledby="inputErrorLabel"
+          aria-labelledby="inputErrorModalLabel"
           aria-hidden="true"
         >
           <div class="modal-dialog modal-dialog-centered">
@@ -1275,11 +1276,12 @@
                     "
                   ></i>
                 </div>
-                <h5 class="fs-30 fw-bold gray-color-400">Error MSG</h5>
+                <h5
+                  class="fs-30 fw-bold gray-color-400"
+                  id="errorMsgTitle"
+                ></h5>
 
-                <p class="text-center gray-color-300">
-                  As the error write your message here.
-                </p>
+                <p class="text-center gray-color-300" id="errorMsgDes"></p>
 
                 <button
                   type="button"
