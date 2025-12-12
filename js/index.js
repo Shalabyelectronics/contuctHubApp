@@ -29,6 +29,9 @@ var contactObject = {
   email: null,
   address: null,
   notes: null,
+  contactGroup: null,
+  isFavorate: false,
+  isEmergency: false,
 };
 
 // Get inputs values when user click on save contact button it will check first if its validate if yes will show contact successfully added otherwise it will show another modal that contain if there is an error on validation or later if the number is dublicated.
@@ -79,7 +82,7 @@ function setModalBasedValidation() {
   }
   return validationStatusObj;
 }
-
+// I didn't use this function yet
 function setErrorMsgBasedInput(inputEle) {
   document
     .querySelector(`#${inputEle}`)
@@ -101,7 +104,7 @@ This function will work one time only when the page load and it will select all 
     notes: /^[\w\s.,!@?()-]+$/im,
   };
 
-  // Select all inputs withen contact Form
+  // Select all text inputs withen contact Form
   var allInputs = contactFormModal.querySelectorAll(
     '.custom-input[type="text"]'
   );
@@ -110,6 +113,7 @@ This function will work one time only when the page load and it will select all 
       if (regex[e.target.id].test(e.target.value)) {
         e.target.nextElementSibling.classList.replace("in-valid", "valid");
         validationResults[e.target.id] = true;
+        contactObject[e.target.id] = e.target.value;
       } else {
         e.target.nextElementSibling.classList.replace("valid", "in-valid");
         validationResults[e.target.id] = false;
@@ -117,6 +121,38 @@ This function will work one time only when the page load and it will select all 
       setModalBasedValidation();
     });
   }
+}
+// I want to get optional Data first
+
+// 3- now I want to get actual data from inputs when my form inputs are valid, we need to cllects all optional data (Group) and checkbox (Favorate and Emergency).
+
+saveContactBtn.addEventListener("click", function () {
+  var validationStatusObj = isAllTextInputsValid();
+  if (validationStatusObj.status === "validation passed") {
+    var contactGroup = document.querySelector("#contactGroup");
+    contactObject.contactGroup = contactGroup.value;
+    var emergencyContact = document.querySelector("#emergencyContact");
+    var favorateContact = document.querySelector("#favorateContact");
+    contactObject.isEmergency = emergencyContact.checked;
+    contactObject.isFavorate = favorateContact.checked;
+    clearInputs();
+  }
+});
+
+function clearInputs() {
+  // Select all text inputs withen contact Form
+  var allInputs = contactFormModal.querySelectorAll(
+    '.custom-input[type="text"]'
+  );
+  for (var i = 0; i < allInputs.length; i++) {
+    allInputs[i].value = "";
+  }
+  var contactGroup = document.querySelector("#contactGroup");
+  contactGroup.value = "default";
+  var emergencyContact = document.querySelector("#emergencyContact");
+  var favorateContact = document.querySelector("#favorateContact");
+  emergencyContact.checked = false;
+  favorateContact.checked = false;
 }
 
 // Edit Contact Form Modal Title Function
