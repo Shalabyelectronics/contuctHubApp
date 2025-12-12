@@ -161,6 +161,21 @@ function updateContactsCounters() {
     document.querySelector("#favorateContacts").textContent =
       favorateContacts.length;
   }
+  resetContactObj();
+}
+
+// 5- now we want to reset the contactObject so it return to its defalt.
+function resetContactObj() {
+  contactObject = {
+    fullName: null,
+    phoneNum: null,
+    email: null,
+    address: null,
+    notes: null,
+    contactGroup: null,
+    isFavorate: false,
+    isEmergency: false,
+  };
 }
 
 // This function will clear inputs
