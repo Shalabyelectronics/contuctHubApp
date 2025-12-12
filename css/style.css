@@ -465,18 +465,17 @@ h1.brand-text {
 }
 
 .form-check-input {
-  
 }
 
 .form-check-input:checked {
-    background-color: var(--color-violet-600);
-    border-color: var(--color-violet-200)
+  background-color: var(--color-violet-600);
+  border-color: var(--color-violet-200);
 }
 
 .form-check-input:focus {
-    border-color: #86b7fe;
-    outline: 0;
-    box-shadow: 0 0 0 .25rem rgba(177, 13, 253, 0.25)
+  border-color: #86b7fe;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(177, 13, 253, 0.25);
 }
 
 /* Card component */
@@ -1084,7 +1083,6 @@ h1.brand-text {
 }
 
 .modal-content .card-body {
- 
   scrollbar-width: none;
   overflow-y: auto;
 }
@@ -1104,6 +1102,12 @@ h1.brand-text {
   color: #fff;
   font-size: 2rem;
 }
+
+/* Scrollbar in modal-body its controlled by modal dialog scrollable */
+.modal-dialog-scrollable .modal-body {
+  scrollbar-width: none;
+}
+
 /* Interactive classes */
 .valid {
   display: none;
@@ -1115,6 +1119,9 @@ h1.brand-text {
 
 /* Small */
 @media screen and (min-width: 576px) {
+  .container {
+    max-width: 640px;
+  }
   .w-sm-11 {
     width: calc(var(--spacer) * 11);
   }
@@ -1130,7 +1137,25 @@ h1.brand-text {
 }
 /* Miduam */
 @media screen and (min-width: 768px) {
+  .container {
+    max-width: 720px;
+  }
 }
 /* Larg */
 @media screen and (min-width: 992px) {
+  .container {
+    max-width: 960px;
+  }
+}
+/* Xl */
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1140px;
+  }
+}
+/* XXL */
+@media (min-width: 1400px) {
+  .container {
+    max-width: 1320px;
+  }
 }
