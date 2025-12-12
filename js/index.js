@@ -144,6 +144,7 @@ saveContactBtn.addEventListener("click", function () {
     contactObject.isFavorate = favorateContact.checked;
     updateContactsCounters();
     clearInputs();
+    saveContactsToLocalStorage();
   }
 });
 
@@ -164,7 +165,7 @@ function updateContactsCounters() {
   resetContactObj();
 }
 
-// 5- now we want to reset the contactObject so it return to its defalt.
+// 5- now we want to reset the contactObject so it return to its default.
 function resetContactObj() {
   contactObject = {
     fullName: null,
@@ -176,6 +177,17 @@ function resetContactObj() {
     isFavorate: false,
     isEmergency: false,
   };
+}
+
+// 6- now we need to save new copy for my three contacts Arraies inside an object that we will use it as our localStorage data
+function saveContactsToLocalStorage(){
+  var contactsArrObj = {
+    totalContacts:totalContacts,
+    favorateContacts:favorateContacts,
+    emergencyContacts:emergencyContacts,
+  }
+
+  localStorage.setItem('contactsArrObj',JSON.stringify(contactsArrObj))
 }
 
 // This function will clear inputs
