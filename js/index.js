@@ -23,6 +23,9 @@ var favorateContacts = [];
 // Emergency Contacts Objects Array
 var emergencyContacts = [];
 
+// WE will check if there are a local data available
+checkIfLocalDataAvailable();
+
 // I'm going to use this variable when all form is valid
 var validationResults = {
   fullName: false,
@@ -142,30 +145,35 @@ saveContactBtn.addEventListener("click", function () {
     var favorateContact = document.querySelector("#favorateContact");
     contactObject.isEmergency = emergencyContact.checked;
     contactObject.isFavorate = favorateContact.checked;
-    updateContactsCounters();
+    updateContactsCountersList();
+    updateCounterDomEle();
     clearInputs();
     saveContactsToLocalStorage();
   }
 });
 
 // 4- now after we complated contact object data when click on save contact btn and when it successfully passed the validation. So now we can update the counters by pushing contacts to totalContacts Array and if the contact is under favrate category will save it in seprate array and same for Emergency.
-function updateContactsCounters() {
+function updateContactsCountersList() {
   totalContacts.push(contactObject);
-  document.querySelector("#totalContacts").textContent = totalContacts.length;
+
   if (contactObject.isEmergency) {
     emergencyContacts.push(contactObject);
-    document.querySelector("#emergencyContacts").textContent =
-      emergencyContacts.length;
   }
   if (contactObject.isFavorate) {
     favorateContacts.push(contactObject);
-    document.querySelector("#favorateContacts").textContent =
-      favorateContacts.length;
   }
   resetContactObj();
 }
 
-// 5- now we want to reset the contactObject so it return to its default.
+// 5- We need to siperate updating the counter in DOM from list and make it after updating the list
+function updateCounterDomEle() {
+  document.querySelector("#totalContacts").textContent = totalContacts.length;
+  document.querySelector("#emergencyContacts").textContent =
+    emergencyContacts.length;
+  document.querySelector("#favorateContacts").textContent =
+    favorateContacts.length;
+}
+// 6- now we want to reset the contactObject so it return to its default.
 function resetContactObj() {
   contactObject = {
     fullName: null,
@@ -179,15 +187,31 @@ function resetContactObj() {
   };
 }
 
-// 6- now we need to save new copy for my three contacts Arraies inside an object that we will use it as our localStorage data
-function saveContactsToLocalStorage(){
+// 7- now we need to save new copy for my three contacts Arraies inside an object that we will use it as our localStorage data
+function saveContactsToLocalStorage() {
   var contactsArrObj = {
-    totalContacts:totalContacts,
-    favorateContacts:favorateContacts,
-    emergencyContacts:emergencyContacts,
-  }
+    totalContacts: totalContacts,
+    favorateContacts: favorateContacts,
+    emergencyContacts: emergencyContacts,
+  };
 
-  localStorage.setItem('contactsArrObj',JSON.stringify(contactsArrObj))
+  localStorage.setItem("contactsArrObj", JSON.stringify(contactsArrObj));
+}
+
+// 8- After we saved the contactsArrObj to localStorage we need to create another function that check if there is a data in localstorage then update the counter with it.
+function checkIfLocalDataAvailable() {
+  var contactsArrObj = JSON.parse(localStorage.getItem("contactsArrObj"));
+  console.log(contactsArrObj);
+  if (contactsArrObj !== null) {
+    totalContacts = contactsArrObj.totalContacts;
+    favorateContacts = contactsArrObj.favorateContacts;
+    emergencyContacts = contactsArrObj.emergencyContacts;
+    updateCounterDomEle();
+
+    console.log("There is Data in local storage");
+  } else {
+    console.log("No Data in local storage");
+  }
 }
 
 // This function will clear inputs
