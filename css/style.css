@@ -1104,6 +1104,15 @@ h1.brand-text {
   color: #fff;
   font-size: 2rem;
 }
+/* Interactive classes */
+.valid {
+  display: none;
+}
+
+.in-valid {
+  display: block;
+}
+
 /* Small */
 @media screen and (min-width: 576px) {
   .w-sm-11 {

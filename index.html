@@ -502,7 +502,6 @@
                   </div>
                 </div>
               </div>
-        
             </div>
           </div>
           <!-- Emergency and Favorate contacts cards -->
@@ -1088,8 +1087,11 @@
                     id="fullName"
                     class="custom-input form-control"
                     placeholder="Enter full name"
-                    required
                   />
+                  <span class="mt-2 ml-2 fs-14 text-danger valid"
+                    >full name must contains at least 3 to 20 chars and
+                    spaces!</span
+                  >
                 </div>
                 <div class="input-wrpper">
                   <label for="phoneNum" class="mb-1"
@@ -1100,17 +1102,24 @@
                     id="phoneNum"
                     class="custom-input form-control"
                     placeholder="e.g., 01012345678"
-                    required
                   />
+                  <span class="mt-2 ml-2 fs-14 text-danger valid"
+                    >Phone number must start with 02 or 01 or +2 with 9
+                    digits!</span
+                  >
                 </div>
                 <div class="input-wrpper">
                   <label for="email" class="mb-1">Email Address</label>
                   <input
-                    type="email"
+                    type="text"
                     id="email"
                     class="custom-input form-control"
                     placeholder="name@example.com"
                   />
+                  <span class="mt-2 ml-2 fs-14 text-danger valid"
+                    >Email must start with at least two chars @ 2chars then dot
+                    2 chars!</span
+                  >
                 </div>
                 <div class="input-wrpper">
                   <label for="address" class="mb-1">Address</label>
@@ -1120,6 +1129,10 @@
                     class="custom-input form-control"
                     placeholder="Enter Address"
                   />
+                  <span class="mt-2 ml-2 fs-14 text-danger valid"
+                    >Address may start with char or digit with some spicail
+                    chars like . - , /</span
+                  >
                 </div>
                 <div class="input-wrpper">
                   <label for="group" class="mb-1">Group</label>
@@ -1139,11 +1152,16 @@
                 <div class="input-wrapper">
                   <label for="notes" class="d-block mb-1">Notes</label>
                   <textarea
+                    type="text"
                     name="notes"
                     id="notes"
                     class="custom-input form-control"
                     placeholder="Write a notes."
                   ></textarea>
+                  <span class="mt-2 ml-2 fs-14 text-danger valid"
+                    >Notes may start with char or digit with some spicail
+                    chars like . - , / ? ...</span
+                  >
                 </div>
                 <div class="input-wrapper d-flex gap-3 align-items-center">
                   <div
