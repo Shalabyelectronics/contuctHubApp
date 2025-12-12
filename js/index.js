@@ -1,3 +1,52 @@
+// All Random users background
+var userBgClasses = [
+  "user-bg-1",
+  "user-bg-2",
+  "user-bg-3",
+  "user-bg-4",
+  "user-bg-5",
+  "user-bg-6",
+  "user-bg-7",
+  "user-bg-8",
+  "user-bg-9",
+  "user-bg-10",
+  "user-bg-11",
+  "user-bg-12",
+  "user-bg-13",
+  "user-bg-14",
+  "user-bg-15",
+  "user-bg-16",
+  "user-bg-17",
+  "user-bg-18",
+  "user-bg-19",
+  "user-bg-20",
+];
+
+// All contact Group classes
+
+var contactGroup = {
+  family: `   <div class="icon-wrapper family-badge">
+                <i class="fas fa-heart"></i>
+                <span>Family</span>
+              </div>`,
+  friends: `  <div class="icon-wrapper friends-badge">
+                  <i class="fas fa-user-group"></i>
+                  <span>Friends</span>
+              </div>`,
+  work: `<div class="icon-wrapper work-badge">
+          <i class="fas fa-briefcase"></i>
+          <span>Work</span>
+        </div>`,
+  school: `<div class="icon-wrapper school-badge">
+              <i class="fas fa-graduation-cap"></i>
+              <span>School</span>
+          </div>`,
+  other: `  <div class="icon-wrapper other-badge">
+              <i class="fas fa-layer-group"></i>
+              <span>Other</span>
+            </div>`,
+};
+
 // Select add new contact button
 var addNewContactBtn = document.querySelector(".btn-add-contact");
 // select the save contact button
@@ -153,6 +202,7 @@ saveContactBtn.addEventListener("click", function () {
     updateCounterDomEle();
     clearInputs();
     saveContactsToLocalStorage();
+    displayContactsCards();
   }
 });
 
@@ -211,10 +261,12 @@ function checkIfLocalDataAvailable() {
     favorateContacts = contactsArrObj.favorateContacts;
     emergencyContacts = contactsArrObj.emergencyContacts;
     updateCounterDomEle();
-
+    document.querySelector("#noContactsCom").classList.add("d-none")
+    displayContactsCards();
     console.log("There is Data in local storage");
   } else {
     console.log("No Data in local storage");
+    document.querySelector("#noContactsCom").classList.remove("d-none")
   }
 }
 
@@ -230,6 +282,197 @@ function checkIfPhoneNumberDublucated(phoneNumber) {
     }
   }
   return isdublucated;
+}
+
+// 10- After preparing the contacts Arraies lists nad save it to local storage and get it from it back now the fun part start and it is to display contacts cards.
+// *- Get first Char from each name part
+function getFirstLetterFromFullName(fullName) {
+  var splitFullName = fullName.split(" ");
+  if (splitFullName.length > 1) {
+    return splitFullName[0][0] + splitFullName[1][0];
+  } else {
+    return splitFullName[0][0];
+  }
+}
+function displayContactsCards() {
+  var cartona = "";
+  for (var i = 0; i < totalContacts.length; i++) {
+    var favorateClassTemp = "d-none";
+    var emergencyClassTemp = "d-none";
+    var emailClassTemp = "";
+    var addressClassTemp = "";
+    var notesClassTemp = "";
+    var contactGroupEle = "";
+    var randomBgClass =
+      userBgClasses[Math.floor(Math.random() * userBgClasses.length)];
+    var letterToDisplay = getFirstLetterFromFullName(totalContacts[i].fullName);
+    if (totalContacts[i].isFavorate) {
+      favorateClassTemp = "";
+    }
+    if (totalContacts[i].isEmergency) {
+      emergencyClassTemp = "";
+    }
+
+    if (!totalContacts[i].email) {
+      emailClassTemp = "d-none";
+    }
+    if (!totalContacts[i].address) {
+      addressClassTemp = "d-none";
+    }
+    if (!totalContacts[i].notes) {
+      notesClassTemp = "d-none";
+    }
+
+    if (totalContacts[i].contactGroup) {
+      contactGroupEle = contactGroup[totalContacts[i].contactGroup];
+    }
+
+    var contactCardComponent = `
+  
+      <div class="col-md-6">
+                <div class="inner">
+                  <div class="card contact-card">
+                    <div class="card-body">
+                      <!-- Card row one contains the contact image , name and number -->
+                      <div class="card-row-1">
+                      <!-- 1- Random user background image -->
+                        <div class="image-wrapper ${randomBgClass}">
+                      <!--2- Get letters from full name -->
+                          <h3 class="text-light">${letterToDisplay}</h3>
+                      <!--3- Change favorateClass based contact object -->
+                          <div class="contatct-img-badge favorate-img-badge ${favorateClassTemp}">
+                            <i class="fas fa-star"></i>
+                          </div>
+                      <!--4- Change emergencyClass based contact object -->
+                          <div class="contatct-img-badge emergency-img-badge ${emergencyClassTemp}">
+                            <i class="fas fa-heart-pulse"></i>
+                          </div>
+                        </div>
+                        <div class="name-and-number">
+                      <!--5- Change full name based of contact object -->
+                          <p class="m-0 contact-name" id="contactName">
+                            ${totalContacts[i].fullName}
+                          </p>
+                          <div class="contact-wrapper number">
+                            <div class="icon-wrapper call-icon">
+                              <i class="fas fa-phone"></i>
+                            </div>
+                        <!--6- Change phone number based of contact object -->
+                            <span id="contactNum">${totalContacts[i].phoneNum}</span>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- Card row two contains the contact email , address and note -->
+                      <div class="card-row-2">
+                        <!-- Email -->
+                        <!--7- Change Email based of contact object -->
+                        <div class="contact-wrapper email ${emailClassTemp}">
+                          <div class="icon-wrapper email-icon">
+                            <i class="fas fa-envelope"></i>
+                          </div>
+                          <span id="emailAddress">${totalContacts[i].email}</span>
+                        </div>
+                        <!-- Address -->
+                         <!--8- Change Address based of contact object -->
+                        <div class="contact-wrapper email ${addressClassTemp}">
+                          <div class="icon-wrapper address-icon">
+                            <i class="fas fa-location-pin"></i>
+                          </div>
+                          <span id="contactNum">${totalContacts[i].address}</span>
+                        </div>
+                        <!-- Note -->
+                         <!--9- Change notes based of contact object -->
+                        <div class="contact-wrapper email ${notesClassTemp}">
+                          <div class="icon-wrapper note-icon">
+                            <i class="fas fa-note-sticky"></i>
+                          </div>
+                          <span id="contactNum">${totalContacts[i].notes}</span>
+                        </div>
+                      </div>
+                      <!-- Card row three contains all selected badges (5 badges from group option and emergeny badge and favorate badge) in general max badges are 3 only-->
+                      <div class="card-row-3">
+                        <div class="selected-badges d-flex gap-2 flex-wrap">
+                         <!--10- Add or remove emergency badge based of contact object -->
+                          <!-- Emergency optional badg -->
+                          <div class="icon-wrapper emergency-optional-badge ${emergencyClassTemp}">
+                            <i class="fas fa-heart-pulse"></i>
+                            <span>Emergency</span>
+                          </div>
+                          <!-- favorate optional badg -->
+                      <!--11- Add or remove Favorate badge based of contact object -->
+                          <div class="icon-wrapper favorite-optional-badge ${favorateClassTemp}">
+                            <i class="fas fa-star"></i>
+                            <span>Favorites</span>
+                          </div>
+                          <!-- Optional badges user will pick only one -->
+                    <!--12- Last Contact Group badge -->
+                    ${contactGroupEle}
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Now last row is the card footer where all actions take place as we can press on call btn to make a call or an email btn to send an email. Also we can add the contact to favorate and emergency contacts box finally we can edit or delete the contact -->
+                    <div
+                      class="card-footer d-flex justify-content-between flex-wrap"
+                    >
+                    <!--13- wrap call icon with ancher tage with tel -->
+                      <div class="call-email-action d-flex gap-2">
+                      <a href="tel:${totalContacts[i].phoneNum}"> 
+                      <button
+                          class="btn action-btn icon-wrapper action-call-icon"
+                        >
+                          <i class="fas fa-phone"></i>
+                        </button>
+                      </a>
+                 <!--14- wrap Email icon with ancher tage with mailto -->
+                        <a href="mailto:${totalContacts[i].email}" class="${emailClassTemp}">
+                        <button class="btn action-btn icon-wrapper email-icon">
+                          <i class="fas fa-envelope"></i>
+                        </button>
+                        </a>
+                      </div>
+                      <div class="other-action d-flex gap-2">
+                      <!--15- Later we will attched this button with an event listenner that edit contact object to add it to favorate -->
+                        <button
+                          class="btn action-btn icon-wrapper action-favorite-icon active-action"
+                        >
+                          <i class="fas fa-star"></i>
+                        </button>
+                       <!--16- Later we will attched this button with an event listenner that edit contact object to add it to emergency -->
+                        <button
+                          class="btn action-btn icon-wrapper emergency-action-icon active-action"
+                        >
+                          <i class="fas fa-heart-pulse"></i>
+                        </button>
+                      <!--17- Later we will attched this button with an event listenner that edit contact object inputs  -->
+                        <button
+                          type="button"
+                          data-bs-toggle="modal"
+                          data-bs-target="#contactFormModal"
+                          class="btn action-btn icon-wrapper edit-action-icon"
+                        >
+                          <i class="fas fa-pen"></i>
+                        </button>
+                        <!--18- Later we will attched this button with an event listenner that delete contact object  -->
+                        <button
+                          type="button"
+                          class="btn action-btn icon-wrapper delete-action-icon"
+                          data-bs-toggle="modal"
+                          data-bs-target="#deletionComfermation"
+                        >
+                          <i class="fas fa-trash"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+  `;
+
+    cartona += contactCardComponent;
+  }
+  document.querySelector("#contactsCardsContainer").innerHTML = cartona;
 }
 
 // This function will clear inputs
