@@ -1,5 +1,7 @@
 // Select add new contact button
 var addNewContactBtn = document.querySelector(".btn-add-contact");
+// select the save contact button
+var saveContactBtn = document.querySelector("#saveContactBtn");
 // Select contact Modal component
 var contactFormModal = document.querySelector("#contactFormModal");
 
@@ -13,6 +15,13 @@ var addedSuccessfullyModalEle = document.querySelector(
   addedSuccessfullyModalID
 );
 var errorModalEle = document.querySelector(errorModalID);
+
+// Total Contacts objects Array
+var totalContacts = [];
+// Favorate Contacts Objects Array
+var favorateContacts = [];
+// Emergency Contacts Objects Array
+var emergencyContacts = [];
 
 // I'm going to use this variable when all form is valid
 var validationResults = {
@@ -65,8 +74,6 @@ function isAllTextInputsValid() {
   }
 }
 // 2- Second I want to get that object from isAllTextInputValid and use it to edit on data-bs-target first I want it basic just when click on the save contact btn I want to show me what value inside the data-bs-target
-// select the save contact button
-var saveContactBtn = document.querySelector("#saveContactBtn");
 
 // attached an event lestinner to save contact button to check is all text input valid
 function setModalBasedValidation() {
@@ -135,10 +142,28 @@ saveContactBtn.addEventListener("click", function () {
     var favorateContact = document.querySelector("#favorateContact");
     contactObject.isEmergency = emergencyContact.checked;
     contactObject.isFavorate = favorateContact.checked;
+    updateContactsCounters();
     clearInputs();
   }
 });
 
+// 4- now after we complated contact object data when click on save contact btn and when it successfully passed the validation. So now we can update the counters by pushing contacts to totalContacts Array and if the contact is under favrate category will save it in seprate array and same for Emergency.
+function updateContactsCounters() {
+  totalContacts.push(contactObject);
+  document.querySelector("#totalContacts").textContent = totalContacts.length;
+  if (contactObject.isEmergency) {
+    emergencyContacts.push(contactObject);
+    document.querySelector("#emergencyContacts").textContent =
+      emergencyContacts.length;
+  }
+  if (contactObject.isFavorate) {
+    favorateContacts.push(contactObject);
+    document.querySelector("#favorateContacts").textContent =
+      favorateContacts.length;
+  }
+}
+
+// This function will clear inputs
 function clearInputs() {
   // Select all text inputs withen contact Form
   var allInputs = contactFormModal.querySelectorAll(
