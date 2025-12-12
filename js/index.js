@@ -33,6 +33,7 @@ var validationResults = {
   email: false,
   address: false,
   notes: false,
+  isdublucated: { status: false, underName: null },
 };
 
 var contactObject = {
@@ -65,12 +66,12 @@ function isAllTextInputsValid() {
       errorMsgTitle: "Phone number Error",
       errorMsgDes: "Please, check your phone number!",
     };
-  } else if (!validationResults.email) {
+  } else if (validationResults.isdublucated.status) {
     return {
       status: "validation faild",
-      faildOn: "email",
-      errorMsgTitle: "Email Error",
-      errorMsgDes: "Please, check your Email!",
+      faildOn: "phoneNum",
+      errorMsgTitle: "Phone number dublucated",
+      errorMsgDes: `The Phone number is already existed under contact name : ${validationResults.isdublucated.underName}`,
     };
   } else {
     return { status: "validation passed" };
@@ -124,6 +125,9 @@ This function will work one time only when the page load and it will select all 
         e.target.nextElementSibling.classList.replace("in-valid", "valid");
         validationResults[e.target.id] = true;
         contactObject[e.target.id] = e.target.value;
+        if (e.target.id === "phoneNum") {
+          checkIfPhoneNumberDublucated(e.target.value);
+        }
       } else {
         e.target.nextElementSibling.classList.replace("valid", "in-valid");
         validationResults[e.target.id] = false;
@@ -212,6 +216,20 @@ function checkIfLocalDataAvailable() {
   } else {
     console.log("No Data in local storage");
   }
+}
+
+// 9- After we solved saving contacts to local object and get it back when reload I want to create a new function that check if phone number is dublucated or not and it will show a modal with the error msg.
+
+function checkIfPhoneNumberDublucated(phoneNumber) {
+  var isdublucated = false;
+  for (var i = 0; i < totalContacts.length; i++) {
+    if (totalContacts[i].phoneNum === phoneNumber) {
+      validationResults.isdublucated.status = true;
+      validationResults.isdublucated.underName = totalContacts[i].fullName;
+      isdublucated = true;
+    }
+  }
+  return isdublucated;
 }
 
 // This function will clear inputs
