@@ -92,7 +92,7 @@ var contactObject = {
   address: null,
   notes: null,
   contactGroup: null,
-  isFavorate: false,
+  isFavorate: null,
   isEmergency: false,
 };
 
@@ -261,12 +261,13 @@ function checkIfLocalDataAvailable() {
     favorateContacts = contactsArrObj.favorateContacts;
     emergencyContacts = contactsArrObj.emergencyContacts;
     updateCounterDomEle();
-    document.querySelector("#noContactsCom").classList.add("d-none")
+    document.querySelector("#noContactsCom").classList.add("d-none");
     displayContactsCards();
+
     console.log("There is Data in local storage");
   } else {
     console.log("No Data in local storage");
-    document.querySelector("#noContactsCom").classList.remove("d-none")
+    document.querySelector("#noContactsCom").classList.remove("d-none");
   }
 }
 
@@ -287,7 +288,7 @@ function checkIfPhoneNumberDublucated(phoneNumber) {
 // 10- After preparing the contacts Arraies lists nad save it to local storage and get it from it back now the fun part start and it is to display contacts cards.
 // *- Get first Char from each name part
 function getFirstLetterFromFullName(fullName) {
-  var splitFullName = fullName.split(" ");
+  var splitFullName = fullName.toUpperCase().split(" ");
   if (splitFullName.length > 1) {
     return splitFullName[0][0] + splitFullName[1][0];
   } else {
@@ -297,35 +298,9 @@ function getFirstLetterFromFullName(fullName) {
 function displayContactsCards() {
   var cartona = "";
   for (var i = 0; i < totalContacts.length; i++) {
-    var favorateClassTemp = "d-none";
-    var emergencyClassTemp = "d-none";
-    var emailClassTemp = "";
-    var addressClassTemp = "";
-    var notesClassTemp = "";
-    var contactGroupEle = "";
     var randomBgClass =
       userBgClasses[Math.floor(Math.random() * userBgClasses.length)];
     var letterToDisplay = getFirstLetterFromFullName(totalContacts[i].fullName);
-    if (totalContacts[i].isFavorate) {
-      favorateClassTemp = "";
-    }
-    if (totalContacts[i].isEmergency) {
-      emergencyClassTemp = "";
-    }
-
-    if (!totalContacts[i].email) {
-      emailClassTemp = "d-none";
-    }
-    if (!totalContacts[i].address) {
-      addressClassTemp = "d-none";
-    }
-    if (!totalContacts[i].notes) {
-      notesClassTemp = "d-none";
-    }
-
-    if (totalContacts[i].contactGroup) {
-      contactGroupEle = contactGroup[totalContacts[i].contactGroup];
-    }
 
     var contactCardComponent = `
   
@@ -340,17 +315,21 @@ function displayContactsCards() {
                       <!--2- Get letters from full name -->
                           <h3 class="text-light">${letterToDisplay}</h3>
                       <!--3- Change favorateClass based contact object -->
-                          <div class="contatct-img-badge favorate-img-badge ${favorateClassTemp}">
+                          <div class="contatct-img-badge favorate-img-badge ${
+                            totalContacts[i].isFavorate ? "" : "d-none"
+                          }">
                             <i class="fas fa-star"></i>
                           </div>
                       <!--4- Change emergencyClass based contact object -->
-                          <div class="contatct-img-badge emergency-img-badge ${emergencyClassTemp}">
+                          <div class="contatct-img-badge emergency-img-badge ${
+                            totalContacts[i].isEmergency ? "" : "d-none"
+                          }">
                             <i class="fas fa-heart-pulse"></i>
                           </div>
                         </div>
                         <div class="name-and-number">
                       <!--5- Change full name based of contact object -->
-                          <p class="m-0 contact-name" id="contactName">
+                          <p class="m-0 contact-name" >
                             ${totalContacts[i].fullName}
                           </p>
                           <div class="contact-wrapper number">
@@ -358,7 +337,9 @@ function displayContactsCards() {
                               <i class="fas fa-phone"></i>
                             </div>
                         <!--6- Change phone number based of contact object -->
-                            <span id="contactNum">${totalContacts[i].phoneNum}</span>
+                            <span class="contact-num">${
+                              totalContacts[i].phoneNum
+                            }</span>
                           </div>
                         </div>
                       </div>
@@ -366,23 +347,33 @@ function displayContactsCards() {
                       <div class="card-row-2">
                         <!-- Email -->
                         <!--7- Change Email based of contact object -->
-                        <div class="contact-wrapper email ${emailClassTemp}">
+                        <div class="contact-wrapper email ${
+                          totalContacts[i].email ? "" : "d-none"
+                        }">
                           <div class="icon-wrapper email-icon">
-                            <i class="fas fa-envelope"></i>
-                          </div>
-                          <span id="emailAddress">${totalContacts[i].email}</span>
+                          <i class="fas fa-envelope"></i>
+                        </div>
+                          <span id="emailAddress">${
+                            totalContacts[i].email
+                          }</span>
                         </div>
                         <!-- Address -->
                          <!--8- Change Address based of contact object -->
-                        <div class="contact-wrapper email ${addressClassTemp}">
+                        <div class="contact-wrapper email ${
+                          totalContacts[i].address ? "" : "d-none"
+                        }">
                           <div class="icon-wrapper address-icon">
                             <i class="fas fa-location-pin"></i>
                           </div>
-                          <span id="contactNum">${totalContacts[i].address}</span>
+                          <span id="contactNum">${
+                            totalContacts[i].address
+                          }</span>
                         </div>
                         <!-- Note -->
                          <!--9- Change notes based of contact object -->
-                        <div class="contact-wrapper email ${notesClassTemp}">
+                        <div class="contact-wrapper email ${
+                          totalContacts[i].notes ? "" : "d-none"
+                        }">
                           <div class="icon-wrapper note-icon">
                             <i class="fas fa-note-sticky"></i>
                           </div>
@@ -394,19 +385,27 @@ function displayContactsCards() {
                         <div class="selected-badges d-flex gap-2 flex-wrap">
                          <!--10- Add or remove emergency badge based of contact object -->
                           <!-- Emergency optional badg -->
-                          <div class="icon-wrapper emergency-optional-badge ${emergencyClassTemp}">
+                          <div class="icon-wrapper emergency-optional-badge ${
+                            totalContacts[i].isEmergency ? "" : "d-none"
+                          }">
                             <i class="fas fa-heart-pulse"></i>
                             <span>Emergency</span>
                           </div>
                           <!-- favorate optional badg -->
                       <!--11- Add or remove Favorate badge based of contact object -->
-                          <div class="icon-wrapper favorite-optional-badge ${favorateClassTemp}">
+                          <div class="icon-wrapper favorite-optional-badge ${
+                            totalContacts[i].isFavorate ? "" : "d-none"
+                          }">
                             <i class="fas fa-star"></i>
                             <span>Favorites</span>
                           </div>
                           <!-- Optional badges user will pick only one -->
                     <!--12- Last Contact Group badge -->
-                    ${contactGroupEle}
+                    ${
+                      totalContacts[i].contactGroup !== "default"
+                        ? contactGroup[totalContacts[i].contactGroup]
+                        : ""
+                    }
                         </div>
                       </div>
                     </div>
@@ -425,22 +424,28 @@ function displayContactsCards() {
                         </button>
                       </a>
                  <!--14- wrap Email icon with ancher tage with mailto -->
-                        <a href="mailto:${totalContacts[i].email}" class="${emailClassTemp}">
+                      <a href="mailto:${totalContacts[i].email}" class="${
+      totalContacts[i].email ? "" : "d-none"
+    }">
                         <button class="btn action-btn icon-wrapper email-icon">
                           <i class="fas fa-envelope"></i>
                         </button>
-                        </a>
+                      </a>
                       </div>
                       <div class="other-action d-flex gap-2">
                       <!--15- Later we will attched this button with an event listenner that edit contact object to add it to favorate -->
                         <button
-                          class="btn action-btn icon-wrapper action-favorite-icon active-action"
+                          class="btn action-btn icon-wrapper action-favorite-icon ${
+                            totalContacts[i].isFavorate ? "active-action" : ""
+                          }"
                         >
                           <i class="fas fa-star"></i>
                         </button>
                        <!--16- Later we will attched this button with an event listenner that edit contact object to add it to emergency -->
                         <button
-                          class="btn action-btn icon-wrapper emergency-action-icon active-action"
+                          class="btn action-btn icon-wrapper emergency-action-icon ${
+                            totalContacts[i].isEmergency ? "active-action" : ""
+                          }"
                         >
                           <i class="fas fa-heart-pulse"></i>
                         </button>
@@ -473,6 +478,125 @@ function displayContactsCards() {
     cartona += contactCardComponent;
   }
   document.querySelector("#contactsCardsContainer").innerHTML = cartona;
+  addFuctionalityForFavorateBtns();
+}
+
+// 11- now we want to add or remove contacts from favorite contacts list when user press on favorate icon color so first it will edit the current contact object by its number as we are going to treated as an ID.
+
+function addFuctionalityForFavorateBtns() {
+  var allFavoratesBtnsList = document.querySelectorAll(".action-favorite-icon");
+  for (var i = 0; i < allFavoratesBtnsList.length; i++) {
+    allFavoratesBtnsList[i].addEventListener("click", function (e) {
+      let contactCardEle = e.target.closest(".contact-card");
+      let phoneNumber = contactCardEle.querySelector(".contact-num").innerHTML;
+      let favorateImgBadge = contactCardEle.querySelector(
+        ".favorate-img-badge"
+      );
+      let favorateOptBadge = contactCardEle.querySelector(
+        ".favorite-optional-badge"
+      );
+      let activeFavIcon = contactCardEle.querySelector(".action-favorite-icon");
+      console.log(phoneNumber);
+
+      // Search if the phone number is in favorate list
+
+      let searchResultInFavorate = searchForContactObjectByNum(
+        favorateContacts,
+        phoneNumber
+      );
+      // Also Search of it on total contacts list
+      let searchResultInTotal = searchForContactObjectByNum(
+        totalContacts,
+        phoneNumber
+      );
+      let contactObj = totalContacts[searchResultInTotal.objectIndex];
+      // So if it is in favorate list do these step first edit its value to false then update the display.
+      // We will locate the exact object from the searchResult object because it's contains (Object index) then instead of update the whole display after editing its value I will just update the exact card only by 1- changing the icon class for favorate-img-badge by adding d-none to it 2- Also by adding d-none for favorite-optional-badge 3- Finally to remove active-action to action-favorite-icon
+      if (searchResultInFavorate) {
+        // Edit the isFavorate value from true to false from the favorate list
+
+        contactObj.isFavorate = false;
+
+        // Now as I said instead of update the whole bage just opdate the nessary classes but first I want to remove the object from its list and dont for got OHH actully I want only to edit the value in the total contacts only and remove it from favorate list.
+
+        // Add d-none for favorateImgBadge
+        favorateImgBadge.classList.add("d-none");
+        favorateOptBadge.classList.add("d-none");
+        activeFavIcon.classList.remove("active-action");
+
+        // After editing its value in Total contacts list lets remove it from favorate list.
+        favorateContacts.splice(searchResultInFavorate.objectIndex, 1);
+        // After we did serious changing lets save it to localStorage
+        saveContactsToLocalStorage();
+        updateCounterDomEle();
+      } else {
+        // Now we want to revearse all what we did when the contact object is in favorate list exactly
+
+        // 1- Make the value of contact Obj for isFavorate to true
+        contactObj.isFavorate = true;
+        // 2- Edit the Icons and badges classes
+        favorateImgBadge.classList.remove("d-none");
+        favorateOptBadge.classList.remove("d-none");
+        activeFavIcon.classList.add("active-action");
+        // 3- Add the contact to favorate list from total contacts
+        favorateContacts.push(contactObj);
+        // 4- Save to localStorage
+        saveContactsToLocalStorage();
+        // 5 - update the counters elements in dom
+        updateCounterDomEle();
+      }
+
+      // var favorateContactObj = searchForContactObjectIndex(
+      //   favorateContacts,
+      //   phoneNumber
+      // );
+
+      // addRemoveContactFromList(
+      //   favorateContactObj,
+      //   totalContacts,
+      //   favorateContacts,
+      //   "isFavorate"
+      // );
+    });
+  }
+}
+
+// * I will build a function that can search for a spacific number givin on selected list and return it's index
+
+function searchForContactObjectByNum(listToSearchIn, phoneNumber) {
+  var result = null;
+  for (var i = 0; i < listToSearchIn.length; i++) {
+    console.log(listToSearchIn[i].phoneNum, phoneNumber);
+    if (listToSearchIn[i].phoneNum === phoneNumber) {
+      result = { objectIndex: i, objectData: listToSearchIn[i] };
+    }
+  }
+  return result;
+}
+
+// *- now I want when click on favorate button if the number is already in favorate list remove it if not add it from main contacts list and while doing that you need to update the contactobject data by isFavorate key where if add it to favorate list make it value true ad if not false then save new changes to local storage.
+
+function addRemoveContactFromList(
+  contactObjectFromSearch,
+  mainContactsList,
+  targetContactList,
+  targetKeyToChangeItValue
+) {
+  if (contactObjectFromSearch) {
+    // if the contact object come from search function not null that mean that the contact is already existed on the target contact list and we need to remove it as well
+    // But before we remove it from the list we need to edit it's value in the main contacts list so when we use updateContactsCountersList will see the new update.
+    var mainContactObj = searchForContactObjectIndex(
+      mainContactsList,
+      contactObjectFromSearch.objectData.phoneNum
+    );
+    totalContacts[mainContactObj.objectIndex][targetKeyToChangeItValue] = false;
+    targetContactList.splice(contactObjectFromSearch.objectIndex, 1);
+    // console.log(totalContacts)
+    // console.log(favorateContacts)
+    // console.log(mainContactObj.objectData)
+    updateCounterDomEle();
+    // saveContactsToLocalStorage();
+  }
 }
 
 // This function will clear inputs
