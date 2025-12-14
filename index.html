@@ -108,7 +108,7 @@
 
     <!-- Main start here -->
     <main class="mt-5">
-      <!-- First section contains 3 contacts counter (Total), (Favorate) and (Emergency) -->
+      <!-- First section contains 3 contacts counter (Total), (Favorite) and (Emergency) -->
       <section class="container gx-xl-5" id="contactsWidgetsCounter">
         <div class="row">
           <!-- Total Contacts -->
@@ -150,7 +150,7 @@
                   >
                     Favorites
                   </h3>
-                  <span id="favorateContacts" class="fw-bold fs-18-24">0</span>
+                  <span id="favoriteContacts" class="fw-bold fs-18-24">0</span>
                 </div>
               </div>
             </div>
@@ -179,7 +179,7 @@
           </div>
         </div>
       </section>
-      <!-- Second Section contains the search input, display contacts and favorate and emergency cards  -->
+      <!-- Second Section contains the search input, display contacts and favorite and emergency cards  -->
       <section class="container gx-xl-5 mt-4" id="contactsWidgetSearch">
         <div class="row gy-4">
           <!-- First row title, description and search input -->
@@ -226,12 +226,12 @@
               <!-- Contact Card Component -->
             </div>
           </div>
-          <!-- Emergency and Favorate contacts cards -->
+          <!-- Emergency and Favorite contacts cards -->
           <div class="col-xl-4">
             <div class="inner">
               <div class="aside-container">
-                <!-- Favorate card  -->
-                <div class="card favorate-card mb-4">
+                <!-- Favorite card  -->
+                <div class="card favorite-card mb-4">
                   <div
                     class="card-header d-flex align-items-start gap-2 p-3 orange-bg-100"
                   >
@@ -247,9 +247,9 @@
                       </span>
                     </div>
                   </div>
-                  <div class="card-body favorate-card-body">
+                  <div class="card-body favorite-card-body">
                     <div class="inner">
-                      <ul class="list-group favorate-list">
+                      <ul class="list-group favorite-list">
                         <li class="list-group-item">
                           <!-- Start -->
                           <div class="card-row-1">
@@ -887,18 +887,18 @@
                 </div>
                 <div class="input-wrapper d-flex gap-3 align-items-center">
                   <div
-                    class="is-favorate form-check d-flex gap-1 align-items-center"
+                    class="is-favorite form-check d-flex gap-1 align-items-center"
                   >
                     <input
                       type="checkbox"
-                      name="favorate"
-                      id="favorateContact"
-                      value="favorate-contact"
+                      name="favorite"
+                      id="favoriteContact"
+                      value="favorite-contact"
                       class="form-check-input"
                     />
-                    <label for="favorateContact" class="form-check-label fs-14">
+                    <label for="favoriteContact" class="form-check-label fs-14">
                       <i class="fas fa-star fs-16 yellow-color-500"></i>
-                      Favorate</label
+                      Favorite</label
                     >
                   </div>
                   <div
@@ -908,7 +908,7 @@
                       type="checkbox"
                       name="emergency"
                       id="emergencyContact"
-                      value="favorate-contact"
+                      value="favorite-contact"
                       class="form-check-input"
                     />
                     <label
@@ -1107,9 +1107,20 @@
       </section>
     </main>
 
-    <!-- End testing -->
+   
     <!-- Main end here -->
+
+ <!-- Start testing -->
+  <section class="test">
+    <button id="testBtn" class="btn btn-primary">Test</button>
+    <div class="test-container">
+      <h1 class="bg-warning text-bg-danger ">Im staticly here</h1>
+    </div>
+  </section>
+ <!-- End testing -->
+
     <script src="./js/bootstrap.bundle.min.js"></script>
-    <script src="./js/index.js" defer></script>
+    <script src="./js/contactCardComponent.js"></script>
+    <script src="./js/index.js"></script>
   </body>
 </html>

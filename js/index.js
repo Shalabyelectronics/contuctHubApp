@@ -67,8 +67,8 @@ var errorModalEle = document.querySelector(errorModalID);
 
 // Total Contacts objects Array
 var totalContacts = [];
-// Favorate Contacts Objects Array
-var favorateContacts = [];
+// Favorite Contacts Objects Array
+var favoriteContacts = [];
 // Emergency Contacts Objects Array
 var emergencyContacts = [];
 
@@ -92,7 +92,7 @@ var contactObject = {
   address: null,
   notes: null,
   contactGroup: null,
-  isFavorate: null,
+  isFavorite: null,
   isEmergency: false,
 };
 
@@ -187,7 +187,7 @@ This function will work one time only when the page load and it will select all 
 }
 // I want to get optional Data first
 
-// 3- now I want to get actual data from inputs when my form inputs are valid, we need to cllects all optional data (Group) and checkbox (Favorate and Emergency).
+// 3- now I want to get actual data from inputs when my form inputs are valid, we need to cllects all optional data (Group) and checkbox (Favorite and Emergency).
 
 saveContactBtn.addEventListener("click", function () {
   var validationStatusObj = isAllTextInputsValid();
@@ -195,9 +195,9 @@ saveContactBtn.addEventListener("click", function () {
     var contactGroup = document.querySelector("#contactGroup");
     contactObject.contactGroup = contactGroup.value;
     var emergencyContact = document.querySelector("#emergencyContact");
-    var favorateContact = document.querySelector("#favorateContact");
+    var favoriteContact = document.querySelector("#favoriteContact");
     contactObject.isEmergency = emergencyContact.checked;
-    contactObject.isFavorate = favorateContact.checked;
+    contactObject.isFavorite = favoriteContact.checked;
     updateContactsCountersList();
     updateCounterDomEle();
     clearInputs();
@@ -206,6 +206,22 @@ saveContactBtn.addEventListener("click", function () {
   }
 });
 
+// We want to study how to edit exact contact card by clicking on edit on the contact card ?
+// Lets think loudly first I'm thinking about something and it is instead of re-display all contact each time I add only one contact is not good thing right so what I'm thinking is why we keep display function for creating all contacts cards just once we reload the page but when we add new contact we just add this one by using append Dom method so to test this soluation I'm going to work on it by my self under function name appendOneContactCard. Wow I did it after using insertAdjacentHTML it will append the html element to dom. so we done from first point second point is we need to add an event listeners to action buttons (favorite , emergency , edit and delete) so in this case I need to add just the event listeners for each not for all again.
+
+function appendOneContactCard() {
+  // first we want to test it when I press on test btn I will add an h1 contain hello word.
+  const testBtn = document.querySelector("#testBtn");
+  const htmlEle = `<h1 id="testMe" class='text-danger'>Hello we are appended to Dom</h1>`;
+  const testContainer = document.querySelector(".test-container");
+
+  testBtn.addEventListener("click", function () {
+    testContainer.insertAdjacentHTML("beforeend", htmlEle);
+  });
+}
+
+appendOneContactCard();
+
 // 4- now after we complated contact object data when click on save contact btn and when it successfully passed the validation. So now we can update the counters by pushing contacts to totalContacts Array and if the contact is under favrate category will save it in seprate array and same for Emergency.
 function updateContactsCountersList() {
   totalContacts.push(contactObject);
@@ -213,8 +229,8 @@ function updateContactsCountersList() {
   if (contactObject.isEmergency) {
     emergencyContacts.push(contactObject);
   }
-  if (contactObject.isFavorate) {
-    favorateContacts.push(contactObject);
+  if (contactObject.isFavorite) {
+    favoriteContacts.push(contactObject);
   }
   resetContactObj();
 }
@@ -224,8 +240,8 @@ function updateCounterDomEle() {
   document.querySelector("#totalContacts").textContent = totalContacts.length;
   document.querySelector("#emergencyContacts").textContent =
     emergencyContacts.length;
-  document.querySelector("#favorateContacts").textContent =
-    favorateContacts.length;
+  document.querySelector("#favoriteContacts").textContent =
+    favoriteContacts.length;
 }
 // 6- now we want to reset the contactObject so it return to its default.
 function resetContactObj() {
@@ -236,7 +252,7 @@ function resetContactObj() {
     address: null,
     notes: null,
     contactGroup: null,
-    isFavorate: false,
+    isFavorite: false,
     isEmergency: false,
   };
 }
@@ -245,7 +261,7 @@ function resetContactObj() {
 function saveContactsToLocalStorage() {
   var contactsArrObj = {
     totalContacts: totalContacts,
-    favorateContacts: favorateContacts,
+    favoriteContacts: favoriteContacts,
     emergencyContacts: emergencyContacts,
   };
 
@@ -258,7 +274,7 @@ function checkIfLocalDataAvailable() {
   console.log(contactsArrObj);
   if (contactsArrObj !== null) {
     totalContacts = contactsArrObj.totalContacts;
-    favorateContacts = contactsArrObj.favorateContacts;
+    favoriteContacts = contactsArrObj.favoriteContacts;
     emergencyContacts = contactsArrObj.emergencyContacts;
     updateCounterDomEle();
     document.querySelector("#noContactsCom").classList.add("d-none");
@@ -298,326 +314,35 @@ function getFirstLetterFromFullName(fullName) {
 function displayContactsCards() {
   var cartona = "";
   for (var i = 0; i < totalContacts.length; i++) {
-    var randomBgClass =
-      userBgClasses[Math.floor(Math.random() * userBgClasses.length)];
-    var letterToDisplay = getFirstLetterFromFullName(totalContacts[i].fullName);
-
-    var contactCardComponent = `
-  
-      <div class="col-md-6">
-                <div class="inner">
-                  <div class="card contact-card">
-                    <div class="card-body">
-                      <!-- Card row one contains the contact image , name and number -->
-                      <div class="card-row-1">
-                      <!-- 1- Random user background image -->
-                        <div class="image-wrapper ${randomBgClass}">
-                      <!--2- Get letters from full name -->
-                          <h3 class="text-light">${letterToDisplay}</h3>
-                      <!--3- Change favorateClass based contact object -->
-                          <div class="contatct-img-badge favorate-img-badge ${
-                            totalContacts[i].isFavorate ? "" : "d-none"
-                          }">
-                            <i class="fas fa-star"></i>
-                          </div>
-                      <!--4- Change emergencyClass based contact object -->
-                          <div class="contatct-img-badge emergency-img-badge ${
-                            totalContacts[i].isEmergency ? "" : "d-none"
-                          }">
-                            <i class="fas fa-heart-pulse"></i>
-                          </div>
-                        </div>
-                        <div class="name-and-number">
-                      <!--5- Change full name based of contact object -->
-                          <p class="m-0 contact-name" >
-                            ${totalContacts[i].fullName}
-                          </p>
-                          <div class="contact-wrapper number">
-                            <div class="icon-wrapper call-icon">
-                              <i class="fas fa-phone"></i>
-                            </div>
-                        <!--6- Change phone number based of contact object -->
-                            <span class="contact-num">${
-                              totalContacts[i].phoneNum
-                            }</span>
-                          </div>
-                        </div>
-                      </div>
-                      <!-- Card row two contains the contact email , address and note -->
-                      <div class="card-row-2">
-                        <!-- Email -->
-                        <!--7- Change Email based of contact object -->
-                        <div class="contact-wrapper email ${
-                          totalContacts[i].email ? "" : "d-none"
-                        }">
-                          <div class="icon-wrapper email-icon">
-                          <i class="fas fa-envelope"></i>
-                        </div>
-                          <span id="emailAddress">${
-                            totalContacts[i].email
-                          }</span>
-                        </div>
-                        <!-- Address -->
-                         <!--8- Change Address based of contact object -->
-                        <div class="contact-wrapper email ${
-                          totalContacts[i].address ? "" : "d-none"
-                        }">
-                          <div class="icon-wrapper address-icon">
-                            <i class="fas fa-location-pin"></i>
-                          </div>
-                          <span id="contactNum">${
-                            totalContacts[i].address
-                          }</span>
-                        </div>
-                        <!-- Note -->
-                         <!--9- Change notes based of contact object -->
-                        <div class="contact-wrapper email ${
-                          totalContacts[i].notes ? "" : "d-none"
-                        }">
-                          <div class="icon-wrapper note-icon">
-                            <i class="fas fa-note-sticky"></i>
-                          </div>
-                          <span id="contactNum">${totalContacts[i].notes}</span>
-                        </div>
-                      </div>
-                      <!-- Card row three contains all selected badges (5 badges from group option and emergeny badge and favorate badge) in general max badges are 3 only-->
-                      <div class="card-row-3">
-                        <div class="selected-badges d-flex gap-2 flex-wrap">
-                         <!--10- Add or remove emergency badge based of contact object -->
-                          <!-- Emergency optional badg -->
-                          <div class="icon-wrapper emergency-optional-badge ${
-                            totalContacts[i].isEmergency ? "" : "d-none"
-                          }">
-                            <i class="fas fa-heart-pulse"></i>
-                            <span>Emergency</span>
-                          </div>
-                          <!-- favorate optional badg -->
-                      <!--11- Add or remove Favorate badge based of contact object -->
-                          <div class="icon-wrapper favorite-optional-badge ${
-                            totalContacts[i].isFavorate ? "" : "d-none"
-                          }">
-                            <i class="fas fa-star"></i>
-                            <span>Favorites</span>
-                          </div>
-                          <!-- Optional badges user will pick only one -->
-                    <!--12- Last Contact Group badge -->
-                    ${
-                      totalContacts[i].contactGroup !== "default"
-                        ? contactGroup[totalContacts[i].contactGroup]
-                        : ""
-                    }
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- Now last row is the card footer where all actions take place as we can press on call btn to make a call or an email btn to send an email. Also we can add the contact to favorate and emergency contacts box finally we can edit or delete the contact -->
-                    <div
-                      class="card-footer d-flex justify-content-between flex-wrap"
-                    >
-                    <!--13- wrap call icon with ancher tage with tel -->
-                      <div class="call-email-action d-flex gap-2">
-                      <a href="tel:${totalContacts[i].phoneNum}"> 
-                      <button
-                          class="btn action-btn icon-wrapper action-call-icon"
-                        >
-                          <i class="fas fa-phone"></i>
-                        </button>
-                      </a>
-                 <!--14- wrap Email icon with ancher tage with mailto -->
-                      <a href="mailto:${totalContacts[i].email}" class="${
-      totalContacts[i].email ? "" : "d-none"
-    }">
-                        <button class="btn action-btn icon-wrapper email-icon">
-                          <i class="fas fa-envelope"></i>
-                        </button>
-                      </a>
-                      </div>
-                      <div class="other-action d-flex gap-2">
-                      <!--15- Later we will attched this button with an event listenner that edit contact object to add it to favorate -->
-                        <button
-                          class="btn action-btn icon-wrapper action-favorite-icon ${
-                            totalContacts[i].isFavorate ? "active-action" : ""
-                          }"
-                        >
-                          <i class="fas fa-star"></i>
-                        </button>
-                       <!--16- Later we will attched this button with an event listenner that edit contact object to add it to emergency -->
-                        <button
-                          class="btn action-btn icon-wrapper emergency-action-icon ${
-                            totalContacts[i].isEmergency ? "active-action" : ""
-                          }"
-                        >
-                          <i class="fas fa-heart-pulse"></i>
-                        </button>
-                      <!--17- Later we will attched this button with an event listenner that edit contact object inputs  -->
-                        <button
-                          type="button"
-                          data-bs-toggle="modal"
-                          data-bs-target="#contactFormModal"
-                          class="btn action-btn icon-wrapper edit-action-icon"
-                        >
-                          <i class="fas fa-pen"></i>
-                        </button>
-                        <!--18- Later we will attched this button with an event listenner that delete contact object  -->
-                        <button
-                          type="button"
-                          class="btn action-btn icon-wrapper delete-action-icon"
-                          data-bs-toggle="modal"
-                          data-bs-target="#deletionComfermation"
-                        >
-                          <i class="fas fa-trash"></i>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-  `;
-
-    cartona += contactCardComponent;
+    cartona += createContactCardComponent(totalContacts[i]);
   }
   document.querySelector("#contactsCardsContainer").innerHTML = cartona;
-  addFuctionalityForFavorateBtns();
-  addFuctionalityForEmergencyBtns()
+  addFuctionalityForFavoriteBtns();
+  addFuctionalityForEmergencyBtns();
 }
 
-// 11- now we want to add or remove contacts from favorite contacts list when user press on favorate icon color so first it will edit the current contact object by its number as we are going to treated as an ID.
+// 11- now we want to add or remove contacts from favorite contacts list when user press on favorite icon color so first it will edit the current contact object by its number as we are going to treated as an ID.
 
-// We will dublucate same this function to add it to emergency button as there is too much details I will think to make it clean later 
-function addFuctionalityForFavorateBtns() {
-  var allFavoratesBtnsList = document.querySelectorAll(".action-favorite-icon");
-  for (var i = 0; i < allFavoratesBtnsList.length; i++) {
-    allFavoratesBtnsList[i].addEventListener("click", function (e) {
-      let contactCardEle = e.target.closest(".contact-card");
-      let phoneNumber = contactCardEle.querySelector(".contact-num").innerHTML;
-      let favorateImgBadge = contactCardEle.querySelector(
-        ".favorate-img-badge"
-      );
-      let favorateOptBadge = contactCardEle.querySelector(
-        ".favorite-optional-badge"
-      );
-      let activeFavIcon = contactCardEle.querySelector(".action-favorite-icon");
+// We will dublucate same this function to add it to emergency button as there is too much details I will think to make it clean later
+function addFuctionalityForFavoriteBtns() {
+  var allFavoritesBtnsList = document.querySelectorAll(".action-favorite-icon");
+  for (var i = 0; i < allFavoritesBtnsList.length; i++) {
+    // We want to make the below dynamic function nodeObj also we want the class for optional badge (favorite or emergency) the rest are same we need to change the activeFavIcon to be activeIcon so next want to check if favorite search for the phone number in favorite list or on emergency list and based of that we will do the reset
 
-      // Search if the phone number is in favorate list
-
-      let searchResultInFavorate = searchForContactObjectByNum(
-        favorateContacts,
-        phoneNumber
-      );
-      // Also Search of it on total contacts list
-      let searchResultInTotal = searchForContactObjectByNum(
-        totalContacts,
-        phoneNumber
-      );
-      let contactObj = totalContacts[searchResultInTotal.objectIndex];
-      // So if it is in favorate list do these step first edit its value to false then update the display.
-      // We will locate the exact object from the searchResult object because it's contains (Object index) then instead of update the whole display after editing its value I will just update the exact card only by 1- changing the icon class for favorate-img-badge by adding d-none to it 2- Also by adding d-none for favorite-optional-badge 3- Finally to remove active-action to action-favorite-icon
-      if (searchResultInFavorate) {
-        // Edit the isFavorate value from true to false from the favorate list
-
-        contactObj.isFavorate = false;
-
-        // Now as I said instead of update the whole bage just opdate the nessary classes but first I want to remove the object from its list and dont for got OHH actully I want only to edit the value in the total contacts only and remove it from favorate list.
-
-        // Add d-none for favorateImgBadge
-        favorateImgBadge.classList.add("d-none");
-        favorateOptBadge.classList.add("d-none");
-        activeFavIcon.classList.remove("active-action");
-
-        // After editing its value in Total contacts list lets remove it from favorate list.
-        favorateContacts.splice(searchResultInFavorate.objectIndex, 1);
-        // After we did serious changing lets save it to localStorage
-        saveContactsToLocalStorage();
-        updateCounterDomEle();
-      } else {
-        // Now we want to revearse all what we did when the contact object is in favorate list exactly
-
-        // 1- Make the value of contact Obj for isFavorate to true
-        contactObj.isFavorate = true;
-        // 2- Edit the Icons and badges classes
-        favorateImgBadge.classList.remove("d-none");
-        favorateOptBadge.classList.remove("d-none");
-        activeFavIcon.classList.add("active-action");
-        // 3- Add the contact to favorate list from total contacts
-        favorateContacts.push(contactObj);
-        // 4- Save to localStorage
-        saveContactsToLocalStorage();
-        // 5 - update the counters elements in dom
-        updateCounterDomEle();
-      }
-    });
+    addEventListennerForFavOrEmr("favorite", allFavoritesBtnsList[i]);
   }
 }
-// Now As the logic of Favorate Btn we will do the emergency btn exactly
+// Now As the logic of Favorite Btn we will do the emergency btn exactly
 function addFuctionalityForEmergencyBtns() {
   // This comments to locate what I just need to change for clean code later
   // 1- First Change is Selecting the Emergency btn by class
-  var allEmergencyBtnsList = document.querySelectorAll(".emergency-action-icon");
+  var allEmergencyBtnsList = document.querySelectorAll(
+    ".action-emergency-icon"
+  );
   // 2- loop throw the allEmergencyBtnsList
   for (var i = 0; i < allEmergencyBtnsList.length; i++) {
-  // 3- Add event listenner for all emergency btns
-    allEmergencyBtnsList[i].addEventListener("click", function (e) {
-      let contactCardEle = e.target.closest(".contact-card");
-      let phoneNumber = contactCardEle.querySelector(".contact-num").innerHTML;
-      // 4- Select the emergncy image badge
-      let emergencyImgBadge = contactCardEle.querySelector(
-        ".emergency-img-badge"
-      );
-      // 5- Select the emergency optional badge
-      let emergencyOptBadge = contactCardEle.querySelector(
-        ".emergency-optional-badge"
-      );
-      // 6- Select the action favorate icon to apply active class to it.
-      let activeEmrIcon = contactCardEle.querySelector(".emergency-action-icon");
-
-      //7- Search if the phone number is in emergency list
-
-      let searchResultInEmergency = searchForContactObjectByNum(
-        emergencyContacts,
-        phoneNumber
-      );
-      //8- Also Search of it on total contacts list
-      let searchResultInTotal = searchForContactObjectByNum(
-        totalContacts,
-        phoneNumber
-      );
-      let contactObj = totalContacts[searchResultInTotal.objectIndex];
-      // 9- Condition if searchResultInEmergency holding truthy or falsy value
-      if (searchResultInEmergency) {
-        //10- Edit the isEmergency value from true to false from the favorate list
-
-        contactObj.isEmergency = false;
-
-
-        //11- Add d-none for emergency related elements
-        emergencyImgBadge.classList.add("d-none");
-        emergencyOptBadge.classList.add("d-none");
-        activeEmrIcon.classList.remove("active-action");
-
-        //12- After editing its value in Total contacts list lets remove it from emergency list.
-        emergencyContacts.splice(searchResultInEmergency.objectIndex, 1);
-        //13- After we did serious changing lets save it to localStorage
-        saveContactsToLocalStorage();
-        // 14- Then lets update it in our counter elements in Dom
-        updateCounterDomEle();
-      } else {
-        // Now we want to revearse all what we did when the contact object is not in emergency list 
-
-        // 1- Make the value of contact Obj for isEmergency to true
-        contactObj.isEmergency = true;
-        // 2- Edit the Icons and badges classes
-        emergencyImgBadge.classList.remove("d-none");
-        emergencyOptBadge.classList.remove("d-none");
-        activeEmrIcon.classList.add("active-action");
-        // 3- Add the contact to Emergency list from total contacts
-        emergencyContacts.push(contactObj);
-        // 4- Save to localStorage
-        saveContactsToLocalStorage();
-        // 5 - update the counters elements in dom
-        updateCounterDomEle();
-      }
-    });
+    
+    addEventListennerForFavOrEmr("emergency", allEmergencyBtnsList[i]);
   }
 }
 
@@ -633,7 +358,7 @@ function searchForContactObjectByNum(listToSearchIn, phoneNumber) {
   return result;
 }
 
-// *- now I want when click on favorate button if the number is already in favorate list remove it if not add it from main contacts list and while doing that you need to update the contactobject data by isFavorate key where if add it to favorate list make it value true ad if not false then save new changes to local storage.
+// *- now I want when click on favorite button if the number is already in favorite list remove it if not add it from main contacts list and while doing that you need to update the contactobject data by isFavorite key where if add it to favorite list make it value true ad if not false then save new changes to local storage.
 
 function addRemoveContactFromList(
   contactObjectFromSearch,
@@ -651,7 +376,7 @@ function addRemoveContactFromList(
     totalContacts[mainContactObj.objectIndex][targetKeyToChangeItValue] = false;
     targetContactList.splice(contactObjectFromSearch.objectIndex, 1);
     // console.log(totalContacts)
-    // console.log(favorateContacts)
+    // console.log(favoriteContacts)
     // console.log(mainContactObj.objectData)
     updateCounterDomEle();
     // saveContactsToLocalStorage();
@@ -670,9 +395,9 @@ function clearInputs() {
   var contactGroup = document.querySelector("#contactGroup");
   contactGroup.value = "default";
   var emergencyContact = document.querySelector("#emergencyContact");
-  var favorateContact = document.querySelector("#favorateContact");
+  var favoriteContact = document.querySelector("#favoriteContact");
   emergencyContact.checked = false;
-  favorateContact.checked = false;
+  favoriteContact.checked = false;
 }
 
 // Edit Contact Form Modal Title Function
@@ -693,5 +418,104 @@ editContactFormModalTitle(addNewContactBtn, "Add New Contact");
 validateContactFormInput();
 
 addNewContactBtn.addEventListener("click", function () {
-  var validationStatusObj = setModalBasedValidation();
+  setModalBasedValidation();
 });
+
+// This function designed to add event listenner for favorite or emergency button
+function addEventListennerForFavOrEmr(btnName, btnElement) {
+  btnElement.addEventListener("click", function (e) {
+    let contactCardEle = e.target.closest(".contact-card");
+    let phoneNumber = contactCardEle.querySelector(".contact-num").innerHTML;
+    let btnImgBadge = contactCardEle.querySelector(`.${btnName}-img-badge`);
+
+    let btnOptBadge = contactCardEle.querySelector(
+      `.${btnName}-optional-badge`
+    );
+
+    let activeBtnIcon = contactCardEle.querySelector(`.action-${btnName}-icon`);
+    console.log(activeBtnIcon, btnName);
+    let searchResultInTotal = searchForContactObjectByNum(
+      totalContacts,
+      phoneNumber
+    );
+    let contactObj = totalContacts[searchResultInTotal.objectIndex];
+
+    if (btnName === "favorite") {
+      let searchResultInFavorite = searchForContactObjectByNum(
+        favoriteContacts,
+        phoneNumber
+      );
+      if (searchResultInFavorite) {
+        // Edit the isFavorite value from true to false from the favorite list
+
+        contactObj.isFavorite = false;
+
+        // Now as I said instead of update the whole bage just opdate the nessary classes but first I want to remove the object from its list and dont for got OHH actully I want only to edit the value in the total contacts only and remove it from favorite list.
+
+        // Add d-none for favoriteImgBadge
+        btnImgBadge.classList.add("d-none");
+        btnOptBadge.classList.add("d-none");
+        activeBtnIcon.classList.remove("active-action");
+
+        // After editing its value in Total contacts list lets remove it from favorite list.
+        favoriteContacts.splice(searchResultInFavorite.objectIndex, 1);
+        // After we did serious changing lets save it to localStorage
+        saveContactsToLocalStorage();
+        updateCounterDomEle();
+      } else {
+        // Now we want to revearse all what we did when the contact object is not in favorite list exactly
+
+        // 1- Make the value of contact Obj for isFavorite to true
+        contactObj.isFavorite = true;
+        // 2- Edit the Icons and badges classes
+        btnImgBadge.classList.remove("d-none");
+        btnOptBadge.classList.remove("d-none");
+        activeBtnIcon.classList.add("active-action");
+        // 3- Add the contact to favorite list from total contacts
+        favoriteContacts.push(contactObj);
+        // 4- Save to localStorage
+        saveContactsToLocalStorage();
+        // 5 - update the counters elements in dom
+        updateCounterDomEle();
+      }
+    } else if (btnName === "emergency") {
+      let searchResultInEmergency = searchForContactObjectByNum(
+        emergencyContacts,
+        phoneNumber
+      );
+
+      if (searchResultInEmergency) {
+        //10- Edit the isEmergency value from true to false from the favorite list
+
+        contactObj.isEmergency = false;
+
+        //11- Add d-none for emergency related elements
+        btnImgBadge.classList.add("d-none");
+        btnOptBadge.classList.add("d-none");
+        activeBtnIcon.classList.remove("active-action");
+
+        //12- After editing its value in Total contacts list lets remove it from emergency list.
+        emergencyContacts.splice(searchResultInEmergency.objectIndex, 1);
+        //13- After we did serious changing lets save it to localStorage
+        saveContactsToLocalStorage();
+        // 14- Then lets update it in our counter elements in Dom
+        updateCounterDomEle();
+      } else {
+        // Now we want to revearse all what we did when the contact object is not in emergency list
+
+        // 1- Make the value of contact Obj for isEmergency to true
+        contactObj.isEmergency = true;
+        // 2- Edit the Icons and badges classes
+        btnImgBadge.classList.remove("d-none");
+        btnOptBadge.classList.remove("d-none");
+        activeBtnIcon.classList.add("active-action");
+        // 3- Add the contact to Emergency list from total contacts
+        emergencyContacts.push(contactObj);
+        // 4- Save to localStorage
+        saveContactsToLocalStorage();
+        // 5 - update the counters elements in dom
+        updateCounterDomEle();
+      }
+    }
+  });
+}

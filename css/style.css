@@ -576,7 +576,7 @@ h1.brand-text {
 }
 
 .emergency-card-body,
-.favorate-card-body {
+.favorite-card-body {
   height: 350px;
   overflow-y: auto;
   scrollbar-width: none;
@@ -591,7 +591,7 @@ h1.brand-text {
   border-radius: 0.875rem;
 }
 
-.card-body > .inner > .list-group.favorate-list > .list-group-item:hover {
+.card-body > .inner > .list-group.favorite-list > .list-group-item:hover {
   background-color: var(--color-orange-100);
 }
 .card-body > .inner > .list-group.emergency-list > .list-group-item:hover {
@@ -692,7 +692,7 @@ h1.brand-text {
 .modal-header .close-btn-icon:hover,
 .card-body
   > .inner
-  > .list-group.favorate-list
+  > .list-group.favorite-list
   > .list-group-item:hover
   .icon-wrapper,
 .card-body
@@ -805,7 +805,7 @@ h1.brand-text {
   --icon-hover-color: var(--color-amber-600);
 }
 
-.emergency-action-icon {
+.action-emergency-icon {
   --start-color: var(--color-rose-200);
   --end-color: var(--color-pink-100);
   --icon-color: var(--color-gray-200);
@@ -956,7 +956,7 @@ h1.brand-text {
   --start-color: var(--color-red-500);
   --end-color: var(--color-pink-600);
 }
-.favorate-img-badge {
+.favorite-img-badge {
   bottom: 3px;
   right: -10px;
   transform: translateY(50%);
