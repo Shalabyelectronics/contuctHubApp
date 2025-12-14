@@ -150,7 +150,7 @@ function setErrorMsgBasedInput(inputEle) {
 }
 
 // validat contact form input function description inside
-function validateContactFormInput() {
+function validateContactFormInput(contactFormModal) {
   /*
 This function will work one time only when the page load and it will select all inputs within the contact form modal then assign an event listenner to it to check if input is valid based Regex
 */
@@ -175,6 +175,7 @@ This function will work one time only when the page load and it will select all 
         validationResults[e.target.id] = true;
         contactObject[e.target.id] = e.target.value;
         if (e.target.id === "phoneNum") {
+          console.log(e.target.value, "Validation function");
           checkIfPhoneNumberDublucated(e.target.value);
         }
       } else {
@@ -198,31 +199,158 @@ saveContactBtn.addEventListener("click", function () {
     var favoriteContact = document.querySelector("#favoriteContact");
     contactObject.isEmergency = emergencyContact.checked;
     contactObject.isFavorite = favoriteContact.checked;
-    updateContactsCountersList();
-    updateCounterDomEle();
     clearInputs();
-    saveContactsToLocalStorage();
-    // displayContactsCards();
 
-    let contactCardComEle = contactCardComponent(
-      "div",
-      ["col-md-6", "contact-card-component"],
-      createContactCardComponent,
-      contactObject
-    );
-
-    const favoriteBtnEle = contactCardComEle.querySelector(
-      ".action-favorite-icon"
-    );
-    const emergencyBtnEle = contactCardComEle.querySelector(
-      ".action-emergency-icon"
-    );
-    addEventListennerForFavOrEmr("favorite", favoriteBtnEle);
-    addEventListennerForFavOrEmr("emergency", emergencyBtnEle);
-    document.querySelector("#contactsCardsContainer").append(contactCardComEle);
+    controllSaveBtnBehaviur(contactFormModal);
     resetContactObj();
+    document.querySelector("#noContactsCom").classList.add("d-none");
   }
 });
+
+// # Now we are going to build edit function that will do the following first we will add a spicail event listner for each edit button that print the number of the contact card first on console.
+function addEventListennerForEditBtn(editBtnElement) {
+  editBtnElement.addEventListener("click", function (e) {
+    const contactCardEle = e.target.closest(".contact-card");
+    let phoneNumberEle = contactCardEle.querySelector(".contact-num");
+    let phoneNumber = phoneNumberEle.innerHTML;
+    let searchResult = searchForContactObjectByNum(totalContacts, phoneNumber);
+
+    contactObject = searchResult.objectData;
+
+    const contactFormModal = document.querySelector("#contactFormModal");
+    clearInputSpanError(contactFormModal);
+    var modalTitle = contactFormModal.querySelector("#contactFormModalLabel");
+
+    contactFormModal.querySelector("#fullName").value = contactObject.fullName;
+    contactFormModal.querySelector("#phoneNum").value = contactObject.phoneNum;
+    contactFormModal.querySelector("#phoneNum").disabled = true;
+    contactFormModal.querySelector("#email").value = contactObject.email;
+    contactFormModal.querySelector("#address").value = contactObject.address;
+    contactFormModal.querySelector("#contactGroup").value =
+      contactObject.contactGroup;
+    contactFormModal.querySelector("#notes").value = contactObject.notes;
+    contactFormModal.querySelector("#favoriteContact").checked =
+      contactObject.isFavorite;
+    contactFormModal.querySelector("#emergencyContact").checked =
+      contactObject.isEmergency;
+    modalTitle.textContent = `Edit Contact Info for ${contactObject.fullName}`;
+
+    validationResults.fullName = true;
+    validationResults.phoneNum = true;
+    console.log("We clicked on edit");
+  });
+}
+
+// * clear classes is there is any error span shown
+function clearInputSpanError(contactFormModal) {
+  const allInputs = contactFormModal.querySelectorAll(
+    '.custom-input[type="text"]'
+  );
+  console.log(allInputs);
+  for (const inputElement of allInputs) {
+    // console.log(inputElement.nextElementSibling);
+    inputElement.nextElementSibling.classList.replace("in-valid", "valid");
+  }
+}
+
+// Now there is a problem and it is about that the save btn already create a new contact card and I want only when add new contact will create a new contact card and if we edit just edit the spacific contact card So I will creat a function that for add new contact card and another one is updatinig existing contact cart
+
+function addNewContactCard() {
+  let contactCardComEle = contactCardComponent(
+    "div",
+    ["col-md-6", "contact-card-component"],
+    createContactCardComponent,
+    contactObject
+  );
+
+  const favoriteBtnEle = contactCardComEle.querySelector(
+    ".action-favorite-icon"
+  );
+  const emergencyBtnEle = contactCardComEle.querySelector(
+    ".action-emergency-icon"
+  );
+  const editContactCardBtn =
+    contactCardComEle.querySelector(".edit-action-icon");
+  addEventListennerForFavOrEmr("favorite", favoriteBtnEle);
+  addEventListennerForFavOrEmr("emergency", emergencyBtnEle);
+  addEventListennerForEditBtn(editContactCardBtn);
+  document.querySelector("#contactsCardsContainer").append(contactCardComEle);
+}
+
+function updateExistingContactCard() {
+  const existingContactObject = searchForContactObjectByNum(
+    totalContacts,
+    contactObject.phoneNum
+  );
+
+  totalContacts.splice(existingContactObject.objectIndex, 1, contactObject);
+
+  const existedContactCardEle = returnContactCardElementByphoneNum(
+    "#contactsCardsContainer",
+    contactObject.phoneNum
+  );
+
+  let updatedContactCardEle = contactCardComponent(
+    "div",
+    ["col-md-6", "contact-card-component"],
+    createContactCardComponent,
+    contactObject
+  );
+
+  const favoriteBtnEle = updatedContactCardEle.querySelector(
+    ".action-favorite-icon"
+  );
+  const emergencyBtnEle = updatedContactCardEle.querySelector(
+    ".action-emergency-icon"
+  );
+  const editContactCardBtn =
+    updatedContactCardEle.querySelector(".edit-action-icon");
+  addEventListennerForFavOrEmr("favorite", favoriteBtnEle);
+  addEventListennerForFavOrEmr("emergency", emergencyBtnEle);
+  addEventListennerForEditBtn(editContactCardBtn);
+  document
+    .querySelector("#contactsCardsContainer")
+    .replaceChild(updatedContactCardEle, existedContactCardEle);
+
+  console.log("We are in update function");
+}
+
+// # We will create a function that return the existed element that we want to replace
+
+function returnContactCardElementByphoneNum(parentID, phoneNum) {
+  // #contactsCardsContainer
+  const contactsCardsEle = document.querySelector(parentID).children;
+  for (const contactCard of contactsCardsEle) {
+    if (contactCard.classList.contains("contact-card-component")) {
+      const contactPhoneNumber =
+        contactCard.querySelector(".contact-num").innerHTML;
+      if (contactPhoneNumber === phoneNum) {
+        return contactCard;
+      }
+    }
+  }
+}
+
+// We will add a controll flow for save button that will check the status before call add new contact card or update the existing contact card
+
+function controllSaveBtnBehaviur(contactModelFormEle) {
+  const modalTitle = contactModelFormEle.querySelector(
+    "#contactFormModalLabel"
+  );
+  let modalStatus = modalTitle.textContent;
+
+  if (modalStatus.split(" ")[0] === "Add") {
+    console.log("We added new contact card");
+    updateContactsCountersList();
+    updateCounterDomEle();
+    saveContactsToLocalStorage();
+    addNewContactCard();
+  } else if (modalStatus.split(" ")[0] === "Edit") {
+    updateExistingContactCard();
+    saveContactsToLocalStorage();
+    console.log("We need to edit the existed contact card");
+  }
+}
 
 // We want to study how to edit exact contact card by clicking on edit on the contact card ?
 // Lets think loudly first I'm thinking about something and it is instead of re-display all contact each time I add only one contact is not good thing right so what I'm thinking is why we keep display function for creating all contacts cards just once we reload the page but when we add new contact we just add this one by using append Dom method so to test this soluation I'm going to work on it by my self under function name appendOneContactCard. Wow I did it after using insertAdjacentHTML it will append the html element to dom. so we done from first point second point is we need to add an event listeners to action buttons (favorite , emergency , edit and delete) so in this case I need to add just the event listeners for each not for all again.
@@ -252,12 +380,11 @@ function appendOneContactCard() {
   });
 }
 
-appendOneContactCard();
-
 // 4- now after we complated contact object data when click on save contact btn and when it successfully passed the validation. So now we can update the counters by pushing contacts to totalContacts Array and if the contact is under favrate category will save it in seprate array and same for Emergency.
 function updateContactsCountersList() {
-  totalContacts.push(contactObject);
-
+  if (contactObject.phoneNum) {
+    totalContacts.push(contactObject);
+  }
   if (contactObject.isEmergency) {
     emergencyContacts.push(contactObject);
   }
@@ -351,8 +478,11 @@ function displayContactsCards() {
     const emergencyBtnEle = contactCardComEle.querySelector(
       ".action-emergency-icon"
     );
+    const editContactCardBtn =
+      contactCardComEle.querySelector(".edit-action-icon");
     addEventListennerForFavOrEmr("favorite", favoriteBtnEle);
     addEventListennerForFavOrEmr("emergency", emergencyBtnEle);
+    addEventListennerForEditBtn(editContactCardBtn);
     document.querySelector("#contactsCardsContainer").append(contactCardComEle);
   }
 }
@@ -447,9 +577,10 @@ function editContactFormModalTitle(btnElement, title) {
 editContactFormModalTitle(addNewContactBtn, "Add New Contact");
 
 // Assign event listener for contact form Text inputs (fullName,phoneNum,email,address,notes);
-validateContactFormInput();
+validateContactFormInput(contactFormModal);
 
 addNewContactBtn.addEventListener("click", function () {
+  clearInputs();
   setModalBasedValidation();
 });
 
@@ -552,17 +683,6 @@ function addEventListennerForFavOrEmr(btnName, btnElement) {
   });
 }
 
-const testObj = {
-  fullName: "Sameer",
-  phoneNum: "0545060429",
-  email: "sfdsa@gmail.com",
-  address: null,
-  notes: "I love programming",
-  contactGroup: "work",
-  isFavorite: true,
-  isEmergency: false,
-};
-
 function contactCardComponent(
   parentTag,
   parentClassList,
@@ -578,10 +698,3 @@ function contactCardComponent(
 
   return parentComponent;
 }
-
-let test = contactCardComponent(
-  "div",
-  ["col-md-6", "contact-card-component"],
-  createContactCardComponent,
-  testObj
-);
