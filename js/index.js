@@ -479,10 +479,12 @@ function displayContactsCards() {
   }
   document.querySelector("#contactsCardsContainer").innerHTML = cartona;
   addFuctionalityForFavorateBtns();
+  addFuctionalityForEmergencyBtns()
 }
 
 // 11- now we want to add or remove contacts from favorite contacts list when user press on favorate icon color so first it will edit the current contact object by its number as we are going to treated as an ID.
 
+// We will dublucate same this function to add it to emergency button as there is too much details I will think to make it clean later 
 function addFuctionalityForFavorateBtns() {
   var allFavoratesBtnsList = document.querySelectorAll(".action-favorite-icon");
   for (var i = 0; i < allFavoratesBtnsList.length; i++) {
@@ -496,7 +498,6 @@ function addFuctionalityForFavorateBtns() {
         ".favorite-optional-badge"
       );
       let activeFavIcon = contactCardEle.querySelector(".action-favorite-icon");
-      console.log(phoneNumber);
 
       // Search if the phone number is in favorate list
 
@@ -545,18 +546,77 @@ function addFuctionalityForFavorateBtns() {
         // 5 - update the counters elements in dom
         updateCounterDomEle();
       }
+    });
+  }
+}
+// Now As the logic of Favorate Btn we will do the emergency btn exactly
+function addFuctionalityForEmergencyBtns() {
+  // This comments to locate what I just need to change for clean code later
+  // 1- First Change is Selecting the Emergency btn by class
+  var allEmergencyBtnsList = document.querySelectorAll(".emergency-action-icon");
+  // 2- loop throw the allEmergencyBtnsList
+  for (var i = 0; i < allEmergencyBtnsList.length; i++) {
+  // 3- Add event listenner for all emergency btns
+    allEmergencyBtnsList[i].addEventListener("click", function (e) {
+      let contactCardEle = e.target.closest(".contact-card");
+      let phoneNumber = contactCardEle.querySelector(".contact-num").innerHTML;
+      // 4- Select the emergncy image badge
+      let emergencyImgBadge = contactCardEle.querySelector(
+        ".emergency-img-badge"
+      );
+      // 5- Select the emergency optional badge
+      let emergencyOptBadge = contactCardEle.querySelector(
+        ".emergency-optional-badge"
+      );
+      // 6- Select the action favorate icon to apply active class to it.
+      let activeEmrIcon = contactCardEle.querySelector(".emergency-action-icon");
 
-      // var favorateContactObj = searchForContactObjectIndex(
-      //   favorateContacts,
-      //   phoneNumber
-      // );
+      //7- Search if the phone number is in emergency list
 
-      // addRemoveContactFromList(
-      //   favorateContactObj,
-      //   totalContacts,
-      //   favorateContacts,
-      //   "isFavorate"
-      // );
+      let searchResultInEmergency = searchForContactObjectByNum(
+        emergencyContacts,
+        phoneNumber
+      );
+      //8- Also Search of it on total contacts list
+      let searchResultInTotal = searchForContactObjectByNum(
+        totalContacts,
+        phoneNumber
+      );
+      let contactObj = totalContacts[searchResultInTotal.objectIndex];
+      // 9- Condition if searchResultInEmergency holding truthy or falsy value
+      if (searchResultInEmergency) {
+        //10- Edit the isEmergency value from true to false from the favorate list
+
+        contactObj.isEmergency = false;
+
+
+        //11- Add d-none for emergency related elements
+        emergencyImgBadge.classList.add("d-none");
+        emergencyOptBadge.classList.add("d-none");
+        activeEmrIcon.classList.remove("active-action");
+
+        //12- After editing its value in Total contacts list lets remove it from emergency list.
+        emergencyContacts.splice(searchResultInEmergency.objectIndex, 1);
+        //13- After we did serious changing lets save it to localStorage
+        saveContactsToLocalStorage();
+        // 14- Then lets update it in our counter elements in Dom
+        updateCounterDomEle();
+      } else {
+        // Now we want to revearse all what we did when the contact object is not in emergency list 
+
+        // 1- Make the value of contact Obj for isEmergency to true
+        contactObj.isEmergency = true;
+        // 2- Edit the Icons and badges classes
+        emergencyImgBadge.classList.remove("d-none");
+        emergencyOptBadge.classList.remove("d-none");
+        activeEmrIcon.classList.add("active-action");
+        // 3- Add the contact to Emergency list from total contacts
+        emergencyContacts.push(contactObj);
+        // 4- Save to localStorage
+        saveContactsToLocalStorage();
+        // 5 - update the counters elements in dom
+        updateCounterDomEle();
+      }
     });
   }
 }
@@ -566,7 +626,6 @@ function addFuctionalityForFavorateBtns() {
 function searchForContactObjectByNum(listToSearchIn, phoneNumber) {
   var result = null;
   for (var i = 0; i < listToSearchIn.length; i++) {
-    console.log(listToSearchIn[i].phoneNum, phoneNumber);
     if (listToSearchIn[i].phoneNum === phoneNumber) {
       result = { objectIndex: i, objectData: listToSearchIn[i] };
     }
