@@ -5,7 +5,7 @@ function createContactCardComponent(contatctObj) {
     userBgClasses[Math.floor(Math.random() * userBgClasses.length)];
   let letterToDisplayOnImg = getFirstLetterFromFullName(contatctObj.fullName);
   return `
-      <div class="col-md-6">
+      
                 <div class="inner">
                   <div class="card contact-card">
                     <div class="card-body">
@@ -168,7 +168,18 @@ function createContactCardComponent(contatctObj) {
                     </div>
                   </div>
                 </div>
-              </div>
+           
 
   `;
 }
+
+function getFirstLetterFromFullName(fullName) {
+  var splitFullName = fullName.toUpperCase().split(" ");
+  if (splitFullName.length > 1) {
+    return splitFullName[0][0] + splitFullName[1][0];
+  } else {
+    return splitFullName[0][0];
+  }
+}
+
+

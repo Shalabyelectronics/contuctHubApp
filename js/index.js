@@ -202,7 +202,25 @@ saveContactBtn.addEventListener("click", function () {
     updateCounterDomEle();
     clearInputs();
     saveContactsToLocalStorage();
-    displayContactsCards();
+    // displayContactsCards();
+
+    let contactCardComEle = contactCardComponent(
+      "div",
+      ["col-md-6", "contact-card-component"],
+      createContactCardComponent,
+      contactObject
+    );
+
+    const favoriteBtnEle = contactCardComEle.querySelector(
+      ".action-favorite-icon"
+    );
+    const emergencyBtnEle = contactCardComEle.querySelector(
+      ".action-emergency-icon"
+    );
+    addEventListennerForFavOrEmr("favorite", favoriteBtnEle);
+    addEventListennerForFavOrEmr("emergency", emergencyBtnEle);
+    document.querySelector("#contactsCardsContainer").append(contactCardComEle);
+    resetContactObj();
   }
 });
 
@@ -212,11 +230,25 @@ saveContactBtn.addEventListener("click", function () {
 function appendOneContactCard() {
   // first we want to test it when I press on test btn I will add an h1 contain hello word.
   const testBtn = document.querySelector("#testBtn");
-  const htmlEle = `<h1 id="testMe" class='text-danger'>Hello we are appended to Dom</h1>`;
+
   const testContainer = document.querySelector(".test-container");
 
   testBtn.addEventListener("click", function () {
-    testContainer.insertAdjacentHTML("beforeend", htmlEle);
+    const textEle = document.createElement("h1");
+    textEle.classList.add("text-danger", "bg-warning");
+    textEle.setAttribute("id", "testMe");
+    const insedeTextEle =
+      "<span class='shalaby text-warning fs-18-24 fw-500'>I am a span </span>";
+    textEle.innerHTML = insedeTextEle;
+
+    let mySpan = textEle.querySelector(".shalaby");
+    console.log(mySpan);
+    testContainer.append(textEle);
+    alert("I am the parent");
+    mySpan.addEventListener("click", function (e) {
+      e.stopPropagation();
+      alert("I am the chile");
+    });
   });
 }
 
@@ -232,7 +264,6 @@ function updateContactsCountersList() {
   if (contactObject.isFavorite) {
     favoriteContacts.push(contactObject);
   }
-  resetContactObj();
 }
 
 // 5- We need to siperate updating the counter in DOM from list and make it after updating the list
@@ -271,7 +302,7 @@ function saveContactsToLocalStorage() {
 // 8- After we saved the contactsArrObj to localStorage we need to create another function that check if there is a data in localstorage then update the counter with it.
 function checkIfLocalDataAvailable() {
   var contactsArrObj = JSON.parse(localStorage.getItem("contactsArrObj"));
-  console.log(contactsArrObj);
+
   if (contactsArrObj !== null) {
     totalContacts = contactsArrObj.totalContacts;
     favoriteContacts = contactsArrObj.favoriteContacts;
@@ -290,35 +321,40 @@ function checkIfLocalDataAvailable() {
 // 9- After we solved saving contacts to local object and get it back when reload I want to create a new function that check if phone number is dublucated or not and it will show a modal with the error msg.
 
 function checkIfPhoneNumberDublucated(phoneNumber) {
-  var isdublucated = false;
   for (var i = 0; i < totalContacts.length; i++) {
     if (totalContacts[i].phoneNum === phoneNumber) {
       validationResults.isdublucated.status = true;
       validationResults.isdublucated.underName = totalContacts[i].fullName;
-      isdublucated = true;
+      return true;
+    } else {
+      validationResults.isdublucated.status = false;
+      return false;
     }
   }
-  return isdublucated;
 }
 
 // 10- After preparing the contacts Arraies lists nad save it to local storage and get it from it back now the fun part start and it is to display contacts cards.
 // *- Get first Char from each name part
-function getFirstLetterFromFullName(fullName) {
-  var splitFullName = fullName.toUpperCase().split(" ");
-  if (splitFullName.length > 1) {
-    return splitFullName[0][0] + splitFullName[1][0];
-  } else {
-    return splitFullName[0][0];
-  }
-}
+
 function displayContactsCards() {
-  var cartona = "";
   for (var i = 0; i < totalContacts.length; i++) {
-    cartona += createContactCardComponent(totalContacts[i]);
+    let contactCardComEle = contactCardComponent(
+      "div",
+      ["col-md-6", "contact-card-component"],
+      createContactCardComponent,
+      totalContacts[i]
+    );
+
+    const favoriteBtnEle = contactCardComEle.querySelector(
+      ".action-favorite-icon"
+    );
+    const emergencyBtnEle = contactCardComEle.querySelector(
+      ".action-emergency-icon"
+    );
+    addEventListennerForFavOrEmr("favorite", favoriteBtnEle);
+    addEventListennerForFavOrEmr("emergency", emergencyBtnEle);
+    document.querySelector("#contactsCardsContainer").append(contactCardComEle);
   }
-  document.querySelector("#contactsCardsContainer").innerHTML = cartona;
-  addFuctionalityForFavoriteBtns();
-  addFuctionalityForEmergencyBtns();
 }
 
 // 11- now we want to add or remove contacts from favorite contacts list when user press on favorite icon color so first it will edit the current contact object by its number as we are going to treated as an ID.
@@ -341,7 +377,6 @@ function addFuctionalityForEmergencyBtns() {
   );
   // 2- loop throw the allEmergencyBtnsList
   for (var i = 0; i < allEmergencyBtnsList.length; i++) {
-    
     addEventListennerForFavOrEmr("emergency", allEmergencyBtnsList[i]);
   }
 }
@@ -375,11 +410,8 @@ function addRemoveContactFromList(
     );
     totalContacts[mainContactObj.objectIndex][targetKeyToChangeItValue] = false;
     targetContactList.splice(contactObjectFromSearch.objectIndex, 1);
-    // console.log(totalContacts)
-    // console.log(favoriteContacts)
-    // console.log(mainContactObj.objectData)
+
     updateCounterDomEle();
-    // saveContactsToLocalStorage();
   }
 }
 
@@ -433,7 +465,7 @@ function addEventListennerForFavOrEmr(btnName, btnElement) {
     );
 
     let activeBtnIcon = contactCardEle.querySelector(`.action-${btnName}-icon`);
-    console.log(activeBtnIcon, btnName);
+
     let searchResultInTotal = searchForContactObjectByNum(
       totalContacts,
       phoneNumber
@@ -519,3 +551,37 @@ function addEventListennerForFavOrEmr(btnName, btnElement) {
     }
   });
 }
+
+const testObj = {
+  fullName: "Sameer",
+  phoneNum: "0545060429",
+  email: "sfdsa@gmail.com",
+  address: null,
+  notes: "I love programming",
+  contactGroup: "work",
+  isFavorite: true,
+  isEmergency: false,
+};
+
+function contactCardComponent(
+  parentTag,
+  parentClassList,
+  eleHTMLToInsert,
+  eleObject
+) {
+  const parentComponent = document.createElement(parentTag);
+  for (classRule of parentClassList) {
+    parentComponent.classList.add(classRule);
+  }
+  const childHTML = eleHTMLToInsert(eleObject);
+  parentComponent.innerHTML = childHTML;
+
+  return parentComponent;
+}
+
+let test = contactCardComponent(
+  "div",
+  ["col-md-6", "contact-card-component"],
+  createContactCardComponent,
+  testObj
+);
