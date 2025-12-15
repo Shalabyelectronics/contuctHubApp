@@ -47,6 +47,10 @@ var contactGroup = {
             </div>`,
 };
 
+// Temp contact card element to delete if user comfirm
+
+var deleteContactCardEle = null;
+
 // Select add new contact button
 var addNewContactBtn = document.querySelector(".btn-add-contact");
 // select the save contact button
@@ -58,7 +62,8 @@ var contactFormModal = document.querySelector("#contactFormModal");
 var addedSuccessfullyModalID = "#contactAddedSuccessfully";
 // Error Modal ID
 var errorModalID = "#inputErrorModal";
-
+// Delete confirmation Model
+const deleteComfermationModal = document.querySelector("#deletionComfermation");
 // addedSuccessfullyModal element
 var addedSuccessfullyModalEle = document.querySelector(
   addedSuccessfullyModalID
@@ -480,6 +485,10 @@ function displayContactsCards() {
     );
     const editContactCardBtn =
       contactCardComEle.querySelector(".edit-action-icon");
+    const deleteContactBtn = contactCardComEle.querySelector(
+      ".delete-action-icon"
+    );
+    addEventTodeleteContactCardElement(deleteContactBtn);
     addEventListennerForFavOrEmr("favorite", favoriteBtnEle);
     addEventListennerForFavOrEmr("emergency", emergencyBtnEle);
     addEventListennerForEditBtn(editContactCardBtn);
@@ -582,6 +591,7 @@ validateContactFormInput(contactFormModal);
 addNewContactBtn.addEventListener("click", function () {
   clearInputs();
   setModalBasedValidation();
+  contactFormModal.querySelector("#phoneNum").disabled = false;
 });
 
 // This function designed to add event listenner for favorite or emergency button
@@ -698,3 +708,66 @@ function contactCardComponent(
 
   return parentComponent;
 }
+
+// Now I'm going to create a function that will add an event listenner on delete so I can delete to contact from the total contact list then check if it is in favorate or emergency also delet it as well then delete it from the dom.
+
+function addEventTodeleteContactCardElement(deletbuttonEle) {
+  deletbuttonEle.addEventListener("click", function (e) {
+    deleteContactCardEle = e.target.closest(".contact-card");
+
+    const contactName =
+      deleteContactCardEle.querySelector(".contact-name").innerHTML;
+    deleteComfermationModal.querySelector("#deletContactName").innerHTML =
+      contactName;
+
+    console.log(contactName);
+  });
+}
+
+function comfirmationDeletionBtn() {
+  const confirmationBtn = deleteComfermationModal.querySelector(
+    "#deletionComfermation"
+  );
+  confirmationBtn.addEventListener("click", function () {
+    if (deleteContactCardEle) {
+      const phoneNumber =
+        deleteContactCardEle.querySelector(".contact-num").innerHTML;
+
+      if (phoneNumber) {
+        // Get phone number object
+        const contactObj = searchForContactObjectByNum(
+          totalContacts,
+          phoneNumber
+        );
+        if (contactObj) {
+          // remove it from total contacts
+          totalContacts.splice(contactObj.objectIndex, 1);
+          // check if contact number in favorite list
+          if (contactObj.objectData.isFavorite) {
+            const favoritContact = searchForContactObjectByNum(
+              favoriteContacts,
+              phoneNumber
+            );
+            favoriteContacts.splice(favoritContact.objectIndex, 1);
+          }
+          // Check if number in emergency list
+          if (contactObj.objectData.isEmergency) {
+            const EmergencyContact = searchForContactObjectByNum(
+              emergencyContacts,
+              phoneNumber
+            );
+            emergencyContacts.splice(EmergencyContact.objectIndex, 1);
+          }
+        }
+        updateCounterDomEle();
+        saveContactsToLocalStorage();
+      }
+
+      deleteContactCardEle.remove();
+
+      deleteContactCardEle = null;
+    }
+  });
+}
+
+comfirmationDeletionBtn();
