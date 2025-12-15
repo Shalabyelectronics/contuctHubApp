@@ -62,6 +62,7 @@ var contactFormModal = document.querySelector("#contactFormModal");
 var addedSuccessfullyModalID = "#contactAddedSuccessfully";
 // Error Modal ID
 var errorModalID = "#inputErrorModal";
+var searchInputEle = document.querySelector("#searchInput");
 // Delete confirmation Model
 const deleteComfermationModal = document.querySelector("#deletionComfermation");
 // addedSuccessfullyModal element
@@ -69,6 +70,9 @@ var addedSuccessfullyModalEle = document.querySelector(
   addedSuccessfullyModalID
 );
 var errorModalEle = document.querySelector(errorModalID);
+// No Contact found component
+
+const noContactsFoundEle = document.querySelector("#noContactsCom");
 
 // Total Contacts objects Array
 var totalContacts = [];
@@ -401,10 +405,13 @@ function updateContactsCountersList() {
 // 5- We need to siperate updating the counter in DOM from list and make it after updating the list
 function updateCounterDomEle() {
   document.querySelector("#totalContacts").textContent = totalContacts.length;
+  document.querySelector("#totalContactsSerachSection").textContent =
+    totalContacts.length;
   document.querySelector("#emergencyContacts").textContent =
     emergencyContacts.length;
   document.querySelector("#favoriteContacts").textContent =
     favoriteContacts.length;
+  // Will update the counter in  search section
 }
 // 6- now we want to reset the contactObject so it return to its default.
 function resetContactObj() {
@@ -771,3 +778,48 @@ function comfirmationDeletionBtn() {
 }
 
 comfirmationDeletionBtn();
+
+// Now we will work on search component where the user can search for number by name, phone and email
+
+function searchForContacts() {
+  searchInputEle.addEventListener("input", function (e) {
+    let hasMatch = false;
+    const searchValue = e.target.value.toLowerCase();
+    const contactsCardsElem = document.querySelector(
+      "#contactsCardsContainer"
+    ).children;
+
+    // document.querySelector("#contactsCardsContainer").innerHTML = "";
+    
+    // First loop and check only the contact-card-component
+    for (const contactCardEle of contactsCardsElem) {
+      if (contactCardEle.classList.contains("contact-card-component")) {
+        const contactName = contactCardEle
+          .querySelector(".contact-name")
+          .innerHTML.toLowerCase();
+        const contactNumber = contactCardEle
+          .querySelector(".contact-num")
+          .innerHTML.toLowerCase();
+        const contactEmail = contactCardEle
+          .querySelector("#emailAddress")
+          .innerHTML.toLowerCase();
+        if (
+          contactName.includes(searchValue) ||
+          contactNumber.includes(searchValue) ||
+          contactEmail.includes(searchValue)
+        ) {
+          contactCardEle.classList.remove("d-none");
+          hasMatch = true;
+        } else {
+          contactCardEle.classList.add("d-none");
+        }
+      }
+    }
+    if (hasMatch) {
+      noContactsFoundEle.classList.add("d-none");
+    } else {
+      noContactsFoundEle.classList.remove("d-none");
+    }
+  });
+}
+searchForContacts();
