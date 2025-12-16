@@ -620,10 +620,12 @@ function displayContactsCards() {
     const deleteContactBtn = contactCardComEle.querySelector(
       ".delete-action-icon"
     );
+    deletbuttonEle = contactCardComEle;
     addEventTodeleteContactCardElement(deleteContactBtn);
     addEventListennerForFavOrEmr("favorite", favoriteBtnEle);
     addEventListennerForFavOrEmr("emergency", emergencyBtnEle);
     addEventListennerForEditBtn(editContactCardBtn);
+    
     document.querySelector("#contactsCardsContainer").append(contactCardComEle);
   }
 }
