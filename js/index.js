@@ -574,6 +574,10 @@ function checkIfLocalDataAvailable() {
     console.log("No Data in local storage");
     document.querySelector("#noContactsCom").classList.remove("d-none");
   }
+
+  if (!totalContacts.length) {
+    noContactsFoundEle.classList.remove("d-none");
+  }
 }
 
 // 9- After we solved saving contacts to local object and get it back when reload I want to create a new function that check if phone number is dublucated or not and it will show a modal with the error msg.
@@ -894,6 +898,10 @@ function comfirmationDeletionBtn() {
         }
         updateCounterDomEle();
         saveContactsToLocalStorage();
+      }
+
+      if (!totalContacts.length) {
+        noContactsFoundEle.classList.remove("d-none");
       }
 
       deleteContactCardEle.remove();
