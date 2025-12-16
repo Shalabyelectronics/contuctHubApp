@@ -164,6 +164,9 @@ h1.brand-text {
 .orange-bg-100 {
   background-color: var(--color-orange-100);
 }
+.red-bg-100 {
+  background-color: var(--color-red-100);
+}
 .brand-bg-color {
   background-color: var(--color-brand);
 }
@@ -250,6 +253,13 @@ h1.brand-text {
 
 .end-orange-color {
   --end-color: var(--color-orange-500);
+}
+.start-red-color {
+  --start-color: var(--color-red-500);
+}
+
+.end-pink-color {
+  --end-color: var(--color-pink-600);
 }
 .start-blue-color {
   --start-color: var(--color-blue-500);

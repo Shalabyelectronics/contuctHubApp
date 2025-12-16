@@ -6,8 +6,8 @@ function createContactCardComponent(contatctObj) {
   let letterToDisplayOnImg = getFirstLetterFromFullName(contatctObj.fullName);
   return `
       
-                <div class="inner">
-                  <div class="card contact-card">
+                <div class="inner h-100">
+                  <div class="card contact-card h-100">
                     <div class="card-body">
                       <!-- Card row one contains the contact image , name and number -->
                       <div class="card-row-1">
@@ -173,6 +173,59 @@ function createContactCardComponent(contatctObj) {
   `;
 }
 
+// Now we are going to add contacts to favorit container when add a new contact card have a favorite contact checked or in edit. so as we use createContactCardComponent now and it will loop throw the favorate contacts list and create the favorate contacts component it will use the cartona startegy because there is no interactivity on it as favorate are same as emergency with just different classes we can use one function only for both.
+
+function createMiniContactItem(contactObj, iconTypeClass) {
+  const randomBgClass =
+    userBgClasses[Math.floor(Math.random() * userBgClasses.length)];
+  const letterToDisplay = getFirstLetterFromFullName(contactObj.fullName);
+
+  return `
+    <li class="list-group-item">
+      <div class="card-row-1">
+        <div class="left-side">
+          <div class="image-wrapper ${randomBgClass}">
+            <h3 class="text-light">${letterToDisplay}</h3>
+          </div>
+          
+          <div class="name-and-number">
+            <p class="m-0 contact-name" id="contactName">
+              ${contactObj.fullName}
+            </p>
+            <div class="contact-wrapper number">
+              <span id="contactNum" class="contact-number">
+                ${contactObj.phoneNum}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="icon-wrapper ${iconTypeClass}">
+          <i class="fas fa-phone"></i>
+        </div>
+      </div>
+    </li>
+  `;
+}
+
+function checkIfElementFavEmeChange(contactList) {
+  
+  for (contactObject of contactList) {
+    if (contactObject.isFavorite) {
+      favoritesContainerList.insertAdjacentHTML(
+        "beforeend",
+        createMiniContactItem(contactObject, "call-icon-green")
+      );
+    }
+    if (contactObject.isEmergency) {
+      emergencyContainerList.insertAdjacentHTML(
+        "beforeend",
+        createMiniContactItem(contactObject, "call-icon-red")
+      );
+    }
+  }
+}
+
 function getFirstLetterFromFullName(fullName) {
   var splitFullName = fullName.toUpperCase().split(" ");
   if (splitFullName.length > 1) {
@@ -181,5 +234,3 @@ function getFirstLetterFromFullName(fullName) {
     return splitFullName[0][0];
   }
 }
-
-
