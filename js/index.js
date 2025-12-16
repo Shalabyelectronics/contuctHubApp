@@ -307,7 +307,6 @@ function clearInputSpanError(contactFormModal) {
   );
 
   for (const inputElement of allInputs) {
-    // console.log(inputElement.nextElementSibling);
     inputElement.nextElementSibling.classList.replace("in-valid", "valid");
   }
 }
@@ -334,7 +333,7 @@ function addNewContactCard() {
   addEventListennerForFavOrEmr("emergency", emergencyBtnEle);
   addEventListennerForEditBtn(editContactCardBtn);
   addEventTodeleteContactCardElement(deletbuttonEle);
-  console.log("This contact I created", contactCardComEle);
+
   document.querySelector("#contactsCardsContainer").append(contactCardComEle);
 }
 
@@ -845,10 +844,7 @@ function contactCardComponent(
 function addEventTodeleteContactCardElement(deletbuttonEle) {
   deletbuttonEle.addEventListener("click", function (e) {
     deleteContactCardEle = e.target.closest(".contact-card");
-    console.log(
-      "This is the elementI want to delet but not conformed",
-      deleteContactCardEle
-    );
+
     const contactName =
       deleteContactCardEle.querySelector(".contact-name").innerHTML;
     deleteComfermationModal.querySelector("#deletContactName").innerHTML =
@@ -884,6 +880,7 @@ function comfirmationDeletionBtn() {
 
             favoriteContacts.splice(favoritContact.objectIndex, 1);
           }
+
           // Check if number in emergency list
           if (contactObj.objectData.isEmergency) {
             const EmergencyContact = searchForContactObjectByNum(
@@ -893,6 +890,9 @@ function comfirmationDeletionBtn() {
             emergencyContacts.splice(EmergencyContact.objectIndex, 1);
           }
         }
+        favoritesContainerList.innerHTML = "";
+        emergencyContainerList.innerHTML = "";
+        checkIfElementFavEmeChange(totalContacts);
         updateCounterDomEle();
         saveContactsToLocalStorage();
       }
@@ -900,16 +900,7 @@ function comfirmationDeletionBtn() {
       if (!totalContacts.length) {
         noContactsFoundEle.classList.remove("d-none");
       }
-      console.log("This element deleted", deleteContactCardEle);
-      console.log(
-        "This element deleted parent",
-        deleteContactCardEle.parentElement
-      );
 
-      console.log(
-        "This the parent parent element component I wnt delete",
-        deleteContactCardEle.parentElement.parentElement
-      );
       deleteContactCardEle.parentElement.parentElement.remove();
 
       deleteContactCardEle = null;

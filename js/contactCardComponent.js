@@ -209,19 +209,20 @@ function createMiniContactItem(contactObj, iconTypeClass) {
 }
 
 function checkIfElementFavEmeChange(contactList) {
-  
-  for (contactObject of contactList) {
-    if (contactObject.isFavorite) {
-      favoritesContainerList.insertAdjacentHTML(
-        "beforeend",
-        createMiniContactItem(contactObject, "call-icon-green")
-      );
-    }
-    if (contactObject.isEmergency) {
-      emergencyContainerList.insertAdjacentHTML(
-        "beforeend",
-        createMiniContactItem(contactObject, "call-icon-red")
-      );
+  if (contactList.length) {
+    for (contactObject of contactList) {
+      if (contactObject.isFavorite) {
+        favoritesContainerList.insertAdjacentHTML(
+          "beforeend",
+          createMiniContactItem(contactObject, "call-icon-green")
+        );
+      }
+      if (contactObject.isEmergency) {
+        emergencyContainerList.insertAdjacentHTML(
+          "beforeend",
+          createMiniContactItem(contactObject, "call-icon-red")
+        );
+      }
     }
   }
 }
