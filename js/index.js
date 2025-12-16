@@ -190,7 +190,6 @@ function setModalBasedValidation() {
   if (validationStatusObj.status === "validation passed") {
     saveContactBtn.setAttribute("data-bs-target", addedSuccessfullyModalID);
   } else if (validationStatusObj.status === "validation faild") {
-    console.log("it didn't pass why?");
     saveContactBtn.setAttribute("data-bs-target", errorModalID);
     errorModalEle.querySelector("#errorMsgTitle").textContent =
       validationStatusObj.errorMsgTitle;
@@ -232,7 +231,6 @@ This function will work one time only when the page load and it will select all 
         validationResults[e.target.id] = true;
         contactObject[e.target.id] = e.target.value;
         if (e.target.id === "phoneNum") {
-          console.log(e.target.value, "Validation function");
           checkIfPhoneNumberDublucated(e.target.value);
         }
       } else {
@@ -299,7 +297,6 @@ function addEventListennerForEditBtn(editBtnElement) {
     modalTitle.textContent = `Edit Contact Info for ${contactObject.fullName}`;
     tempFavorateStatus = contactObject.isFavorite;
     checkValidationInputs();
-    console.log("We clicked on edit");
   });
 }
 
@@ -308,7 +305,7 @@ function clearInputSpanError(contactFormModal) {
   const allInputs = contactFormModal.querySelectorAll(
     '.custom-input[type="text"]'
   );
-  console.log(allInputs);
+
   for (const inputElement of allInputs) {
     // console.log(inputElement.nextElementSibling);
     inputElement.nextElementSibling.classList.replace("in-valid", "valid");
@@ -336,7 +333,8 @@ function addNewContactCard() {
   addEventListennerForFavOrEmr("favorite", favoriteBtnEle);
   addEventListennerForFavOrEmr("emergency", emergencyBtnEle);
   addEventListennerForEditBtn(editContactCardBtn);
-  addEventTodeleteContactCardElement(deleteContactBtn);
+  addEventTodeleteContactCardElement(deletbuttonEle);
+  console.log("This contact I created", contactCardComEle);
   document.querySelector("#contactsCardsContainer").append(contactCardComEle);
 }
 
@@ -374,8 +372,6 @@ function updateExistingContactCard() {
   document
     .querySelector("#contactsCardsContainer")
     .replaceChild(updatedContactCardEle, existedContactCardEle);
-
-  console.log("We are in update function");
 }
 
 // # We will create a function that return the existed element that we want to replace
@@ -405,7 +401,6 @@ function controllSaveBtnBehaviur(contactModelFormEle) {
   let modalStatus = modalTitle.textContent;
 
   if (modalStatus.split(" ")[0] === "Add") {
-    console.log("We added new contact card");
     updateContactsCountersList();
     updateCounterDomEle();
     saveContactsToLocalStorage();
@@ -477,7 +472,6 @@ function controllSaveBtnBehaviur(contactModelFormEle) {
     tempEmergencyEditStatus = false;
     tempFavorateEditStatus = false;
     saveContactsToLocalStorage();
-    console.log("We need to edit the existed contact card");
   }
 }
 
@@ -499,7 +493,7 @@ function appendOneContactCard() {
     textEle.innerHTML = insedeTextEle;
 
     let mySpan = textEle.querySelector(".shalaby");
-    console.log(mySpan);
+
     testContainer.append(textEle);
     alert("I am the parent");
     mySpan.addEventListener("click", function (e) {
@@ -570,9 +564,7 @@ function checkIfLocalDataAvailable() {
     document.querySelector("#noContactsCom").classList.add("d-none");
     displayContactsCards();
     checkIfElementFavEmeChange(totalContacts);
-    console.log("There is Data in local storage");
   } else {
-    console.log("No Data in local storage");
     document.querySelector("#noContactsCom").classList.remove("d-none");
   }
 
@@ -586,10 +578,9 @@ function checkIfLocalDataAvailable() {
 function checkIfPhoneNumberDublucated(phoneNumber) {
   for (var i = 0; i < totalContacts.length; i++) {
     if (totalContacts[i].phoneNum === phoneNumber) {
-      console.log("It see that number is dublicated");
       validationResults.isdublucated.status = true;
       validationResults.isdublucated.underName = totalContacts[i].fullName;
-      console.log(validationResults);
+
       return true;
     } else {
       validationResults.isdublucated.status = false;
@@ -622,7 +613,7 @@ function displayContactsCards() {
       ".delete-action-icon"
     );
     deletbuttonEle = contactCardComEle;
-    addEventTodeleteContactCardElement(deleteContactBtn);
+    addEventTodeleteContactCardElement(deletbuttonEle);
     addEventListennerForFavOrEmr("favorite", favoriteBtnEle);
     addEventListennerForFavOrEmr("emergency", emergencyBtnEle);
     addEventListennerForEditBtn(editContactCardBtn);
@@ -854,7 +845,10 @@ function contactCardComponent(
 function addEventTodeleteContactCardElement(deletbuttonEle) {
   deletbuttonEle.addEventListener("click", function (e) {
     deleteContactCardEle = e.target.closest(".contact-card");
-
+    console.log(
+      "This is the elementI want to delet but not conformed",
+      deleteContactCardEle
+    );
     const contactName =
       deleteContactCardEle.querySelector(".contact-name").innerHTML;
     deleteComfermationModal.querySelector("#deletContactName").innerHTML =
@@ -887,7 +881,7 @@ function comfirmationDeletionBtn() {
               favoriteContacts,
               phoneNumber
             );
-            console.log("Favorite Index", favoritContact);
+
             favoriteContacts.splice(favoritContact.objectIndex, 1);
           }
           // Check if number in emergency list
@@ -906,8 +900,17 @@ function comfirmationDeletionBtn() {
       if (!totalContacts.length) {
         noContactsFoundEle.classList.remove("d-none");
       }
+      console.log("This element deleted", deleteContactCardEle);
+      console.log(
+        "This element deleted parent",
+        deleteContactCardEle.parentElement
+      );
 
-      deleteContactCardEle.remove();
+      console.log(
+        "This the parent parent element component I wnt delete",
+        deleteContactCardEle.parentElement.parentElement
+      );
+      deleteContactCardEle.parentElement.parentElement.remove();
 
       deleteContactCardEle = null;
     }
