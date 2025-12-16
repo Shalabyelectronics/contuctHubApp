@@ -587,7 +587,7 @@ h1.brand-text {
 
 .emergency-card-body,
 .favorite-card-body {
-  height: 350px;
+  max-height: 350px;
   overflow-y: auto;
   scrollbar-width: none;
 }
