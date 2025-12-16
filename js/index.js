@@ -324,7 +324,7 @@ function addNewContactCard() {
     createContactCardComponent,
     contactObject
   );
-
+  deletbuttonEle = contactCardComEle;
   const favoriteBtnEle = contactCardComEle.querySelector(
     ".action-favorite-icon"
   );
@@ -336,6 +336,7 @@ function addNewContactCard() {
   addEventListennerForFavOrEmr("favorite", favoriteBtnEle);
   addEventListennerForFavOrEmr("emergency", emergencyBtnEle);
   addEventListennerForEditBtn(editContactCardBtn);
+  addEventTodeleteContactCardElement(deleteContactBtn);
   document.querySelector("#contactsCardsContainer").append(contactCardComEle);
 }
 
@@ -625,7 +626,7 @@ function displayContactsCards() {
     addEventListennerForFavOrEmr("favorite", favoriteBtnEle);
     addEventListennerForFavOrEmr("emergency", emergencyBtnEle);
     addEventListennerForEditBtn(editContactCardBtn);
-    
+
     document.querySelector("#contactsCardsContainer").append(contactCardComEle);
   }
 }
