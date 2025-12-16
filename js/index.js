@@ -160,26 +160,14 @@ function checkValidationInputs(contactObj) {
     notes: /^[\w\s.,!@?()-]+$/im,
   };
   // Select all text inputs withen contact Form
-  var allInputs = contactFormModal.querySelectorAll(
-    '.custom-input[type="text"]'
-  );
 
-  for (var i = 0; i < allInputs.length; i++) {
-    if (regex[allInputs[i].id].test(allInputs[i].value)) {
-      allInputs[i].nextElementSibling.classList.replace("in-valid", "valid");
-      validationResults[allInputs[i].id] = true;
-      contactObject[allInputs[i].id] = allInputs[i].value;
-      if (allInputs[i].id === "phoneNum") {
-        if (!contactObject.phoneNum === tempNumber) {
-          checkIfPhoneNumberDublucated(allInputs[i].value);
-        }
-      }
-    } else {
-      allInputs[i].nextElementSibling.classList.replace("valid", "in-valid");
-      validationResults[allInputs[i].id] = false;
-    }
-    setModalBasedValidation();
+  if (regex.fullName.test(contactObj.fullName)) {
+    validationResults.fullName = true;
   }
+  if (regex.phoneNum.test(contactObj.phoneNum)) {
+    validationResults.phoneNum = true;
+  }
+  setModalBasedValidation();
 }
 
 // 2- Second I want to get that object from isAllTextInputValid and use it to edit on data-bs-target first I want it basic just when click on the save contact btn I want to show me what value inside the data-bs-target
@@ -296,7 +284,7 @@ function addEventListennerForEditBtn(editBtnElement) {
       contactObject.isEmergency;
     modalTitle.textContent = `Edit Contact Info for ${contactObject.fullName}`;
     tempFavorateStatus = contactObject.isFavorite;
-    checkValidationInputs();
+    checkValidationInputs(contactObject);
   });
 }
 
