@@ -316,10 +316,11 @@ function addNewContactCard() {
   );
   const editContactCardBtn =
     contactCardComEle.querySelector(".edit-action-icon");
+  const deleteBtnEle = contactCardComEle.querySelector(".delete-action-icon");
   addEventListennerForFavOrEmr("favorite", favoriteBtnEle);
   addEventListennerForFavOrEmr("emergency", emergencyBtnEle);
   addEventListennerForEditBtn(editContactCardBtn);
-  addEventTodeleteContactCardElement(deletbuttonEle);
+  addEventTodeleteContactCardElement(deleteBtnEle);
 
   document.querySelector("#contactsCardsContainer").append(contactCardComEle);
 }
@@ -327,7 +328,7 @@ function addNewContactCard() {
 function updateExistingContactCard() {
   const existingContactObject = searchForContactObjectByNum(
     totalContacts,
-    contactObject.phoneNum
+    tempNumber
   );
 
   if (existingContactObject) {
@@ -336,7 +337,7 @@ function updateExistingContactCard() {
 
   const existedContactCardEle = returnContactCardElementByphoneNum(
     "#contactsCardsContainer",
-    contactObject.phoneNum
+    tempNumber
   );
 
   if (!existedContactCardEle) {
