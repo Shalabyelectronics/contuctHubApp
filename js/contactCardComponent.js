@@ -212,17 +212,17 @@ function checkIfElementFavEmeChange(contactList) {
   favoritesContainerList.innerHTML = "";
   emergencyContainerList.innerHTML = "";
   if (contactList.length) {
-    for (contactObject of contactList) {
-      if (contactObject.isFavorite) {
+    for (let contact of contactList) {
+      if (contact.isFavorite) {
         favoritesContainerList.insertAdjacentHTML(
           "beforeend",
-          createMiniContactItem(contactObject, "call-icon-green")
+          createMiniContactItem(contact, "call-icon-green")
         );
       }
-      if (contactObject.isEmergency) {
+      if (contact.isEmergency) {
         emergencyContainerList.insertAdjacentHTML(
           "beforeend",
-          createMiniContactItem(contactObject, "call-icon-red")
+          createMiniContactItem(contact, "call-icon-red")
         );
       }
     }

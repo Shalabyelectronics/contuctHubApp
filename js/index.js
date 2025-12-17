@@ -232,8 +232,7 @@ This function will work one time only when the page load and it will select all 
 // I want to get optional Data first
 
 // 3- now I want to get actual data from inputs when my form inputs are valid, we need to cllects all optional data (Group) and checkbox (Favorite and Emergency).
-let tempFavorateAddStatus = false;
-let tempEmergencyAddStatus = false;
+
 saveContactBtn.addEventListener("click", function () {
   var validationStatusObj = isAllTextInputsValid();
   if (validationStatusObj.status === "validation passed") {
@@ -243,8 +242,7 @@ saveContactBtn.addEventListener("click", function () {
     var favoriteContact = document.querySelector("#favoriteContact");
     contactObject.isEmergency = emergencyContact.checked;
     contactObject.isFavorite = favoriteContact.checked;
-    tempFavorateAddStatus = favoriteContact.checked;
-    tempEmergencyAddStatus = emergencyContact.checked;
+
     clearInputs();
 
     tempNumber = null;
@@ -255,16 +253,17 @@ saveContactBtn.addEventListener("click", function () {
 });
 
 // # Now we are going to build edit function that will do the following first we will add a spicail event listner for each edit button that print the number of the contact card first on console.
-let tempFavorateEditStatus = false;
-let tempEmergencyEditStatus = false;
 
 function addEventListennerForEditBtn(editBtnElement) {
   editBtnElement.addEventListener("click", function (e) {
     const contactCardEle = e.target.closest(".contact-card");
     let phoneNumberEle = contactCardEle.querySelector(".contact-num");
-    let phoneNumber = phoneNumberEle.innerHTML;
+    let phoneNumber = phoneNumberEle.innerHTML.trim();
     let searchResult = searchForContactObjectByNum(totalContacts, phoneNumber);
-    contactObject = searchResult.objectData;
+    if (searchResult) {
+      contactObject = JSON.parse(JSON.stringify(searchResult.objectData));
+    }
+
     tempNumber = contactObject.phoneNum;
     const contactFormModal = document.querySelector("#contactFormModal");
     clearInputSpanError(contactFormModal);
@@ -272,7 +271,7 @@ function addEventListennerForEditBtn(editBtnElement) {
 
     contactFormModal.querySelector("#fullName").value = contactObject.fullName;
     contactFormModal.querySelector("#phoneNum").value = contactObject.phoneNum;
-    contactFormModal.querySelector("#phoneNum").disabled = true;
+
     contactFormModal.querySelector("#email").value = contactObject.email;
     contactFormModal.querySelector("#address").value = contactObject.address;
     contactFormModal.querySelector("#contactGroup").value =
@@ -283,8 +282,7 @@ function addEventListennerForEditBtn(editBtnElement) {
     contactFormModal.querySelector("#emergencyContact").checked =
       contactObject.isEmergency;
     modalTitle.textContent = `Edit Contact Info for ${contactObject.fullName}`;
-    tempFavorateEditStatus = contactObject.isFavorite;
-    tempEmergencyEditStatus = contactObject.isEmergency;
+
     checkValidationInputs(contactObject);
   });
 }
@@ -332,12 +330,19 @@ function updateExistingContactCard() {
     contactObject.phoneNum
   );
 
-  totalContacts.splice(existingContactObject.objectIndex, 1, contactObject);
+  if (existingContactObject) {
+    totalContacts.splice(existingContactObject.objectIndex, 1, contactObject);
+  }
 
   const existedContactCardEle = returnContactCardElementByphoneNum(
     "#contactsCardsContainer",
     contactObject.phoneNum
   );
+
+  if (!existedContactCardEle) {
+    console.error("Could not find the card to replace in the DOM.");
+    return;
+  }
 
   let updatedContactCardEle = contactCardComponent(
     "div",
@@ -354,9 +359,17 @@ function updateExistingContactCard() {
   );
   const editContactCardBtn =
     updatedContactCardEle.querySelector(".edit-action-icon");
+  const deleteBtnEle = updatedContactCardEle.querySelector(
+    ".delete-action-icon"
+  );
   addEventListennerForFavOrEmr("favorite", favoriteBtnEle);
   addEventListennerForFavOrEmr("emergency", emergencyBtnEle);
+  addEventTodeleteContactCardElement(deleteBtnEle);
   addEventListennerForEditBtn(editContactCardBtn);
+  document
+    .querySelector("#contactsCardsContainer")
+    .replaceChild(updatedContactCardEle, existedContactCardEle);
+
   document
     .querySelector("#contactsCardsContainer")
     .replaceChild(updatedContactCardEle, existedContactCardEle);
@@ -366,16 +379,20 @@ function updateExistingContactCard() {
 
 function returnContactCardElementByphoneNum(parentID, phoneNum) {
   // #contactsCardsContainer
-  const contactsCardsEle = document.querySelector(parentID).children;
+  const container = document.querySelector(parentID);
+  if (!container) return null;
+  const contactsCardsEle = container.children;
   for (const contactCard of contactsCardsEle) {
     if (contactCard.classList.contains("contact-card-component")) {
-      const contactPhoneNumber =
-        contactCard.querySelector(".contact-num").innerHTML;
-      if (contactPhoneNumber === phoneNum) {
+      const contactPhoneNumber = contactCard
+        .querySelector(".contact-num")
+        .innerHTML.trim();
+      if (contactPhoneNumber === phoneNum.trim()) {
         return contactCard;
       }
     }
   }
+  return null;
 }
 
 // We will add a controll flow for save button that will check the status before call add new contact card or update the existing contact card
@@ -384,82 +401,29 @@ function controllSaveBtnBehaviur(contactModelFormEle) {
   const modalTitle = contactModelFormEle.querySelector(
     "#contactFormModalLabel"
   );
-  const favoriteMiniContactsList = favoritesContainerList.children;
-  const emergencyMiniContactList = emergencyContainerList.children;
+
   let modalStatus = modalTitle.textContent;
 
   if (modalStatus.split(" ")[0] === "Add") {
     updateContactsCountersList();
+    addNewContactCard();
     updateCounterDomEle();
     saveContactsToLocalStorage();
-    addNewContactCard();
-    if (tempFavorateAddStatus !== contactObject.isFavorite) {
-      checkIfElementFavEmeChange(totalContacts);
-    } else {
-      // Now will delete fave contact from its container
-
-      for (const favMiniContact of favoriteMiniContactsList) {
-        const faveMiniContactNumber = favMiniContact
-          .querySelector("#contactNum")
-          .innerHTML.trim();
-
-        if (faveMiniContactNumber === contactObject.phoneNum) {
-          favMiniContact.remove();
-        }
-      }
-    }
-    if (tempEmergencyAddStatus !== contactObject.isEmergency) {
-      checkIfElementFavEmeChange(totalContacts);
-    } else {
-      // Now will delete fave contact from its container
-
-      for (emrMiniContact of emergencyMiniContactList) {
-        const emrMiniContactNumber = emrMiniContact
-          .querySelector("#contactNum")
-          .innerHTML.trim();
-
-        if (emrMiniContactNumber === contactObject.phoneNum) {
-          emrMiniContact.remove();
-        }
-      }
-    }
-    tempFavorateAddStatus = false;
-    tempEmergencyAddStatus = false;
   } else if (modalStatus.split(" ")[0] === "Edit") {
     updateExistingContactCard();
-    if (tempFavorateEditStatus !== contactObject.isFavorite) {
-      checkIfElementFavEmeChange(totalContacts);
-    } else {
-      // Now will delete fave contact from its container
-
-      for (const favMiniContact of favoriteMiniContactsList) {
-        const faveMiniContactNumber = favMiniContact
-          .querySelector("#contactNum")
-          .innerHTML.trim();
-
-        if (faveMiniContactNumber === contactObject.phoneNum) {
-          favMiniContact.remove();
-        }
+    favoriteContacts = [];
+    emergencyContacts = [];
+    for (const contactObj of totalContacts) {
+      if (contactObj.isFavorite) {
+        favoriteContacts.push(contactObj);
+      }
+      if (contactObj.isEmergency) {
+        emergencyContacts.push(contactObj);
       }
     }
-    if (tempEmergencyEditStatus !== contactObject.isEmergency) {
-      checkIfElementFavEmeChange(totalContacts);
-    } else {
-      // Now will delete fave contact from its container
-
-      for (const emrMiniContact of emergencyMiniContactList) {
-        const emrMiniContactNumber = emrMiniContact
-          .querySelector("#contactNum")
-          .innerHTML.trim();
-
-        if (emrMiniContactNumber === contactObject.phoneNum) {
-          emrMiniContact.remove();
-        }
-      }
-    }
-    tempEmergencyEditStatus = false;
-    tempFavorateEditStatus = false;
+    updateCounterDomEle();
     saveContactsToLocalStorage();
+    checkIfElementFavEmeChange(totalContacts);
   }
 }
 
@@ -564,17 +528,19 @@ function checkIfLocalDataAvailable() {
 // 9- After we solved saving contacts to local object and get it back when reload I want to create a new function that check if phone number is dublucated or not and it will show a modal with the error msg.
 
 function checkIfPhoneNumberDublucated(phoneNumber) {
-  for (var i = 0; i < totalContacts.length; i++) {
-    if (totalContacts[i].phoneNum === phoneNumber) {
-      validationResults.isdublucated.status = true;
-      validationResults.isdublucated.underName = totalContacts[i].fullName;
+  if (tempNumber !== phoneNumber) {
+    for (var i = 0; i < totalContacts.length; i++) {
+      if (totalContacts[i].phoneNum === phoneNumber) {
+        validationResults.isdublucated.status = true;
+        validationResults.isdublucated.underName = totalContacts[i].fullName;
 
-      return true;
-    } else {
-      validationResults.isdublucated.status = false;
-      return false;
+        return true;
+      }
     }
   }
+
+  validationResults.isdublucated.status = false;
+  return false;
 }
 
 // 10- After preparing the contacts Arraies lists nad save it to local storage and get it from it back now the fun part start and it is to display contacts cards.
