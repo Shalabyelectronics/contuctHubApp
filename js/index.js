@@ -386,7 +386,7 @@ function returnContactCardElementByphoneNum(parentID, phoneNum) {
   for (const contactCard of contactsCardsEle) {
     if (contactCard.classList.contains("contact-card-component")) {
       const contactPhoneNumber = contactCard
-        .querySelector(".contact-num")
+        .querySelector(".contact-num").trim()
         .innerHTML.trim();
       if (contactPhoneNumber === phoneNum) {
         return contactCard;
