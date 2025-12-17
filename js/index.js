@@ -245,9 +245,9 @@ saveContactBtn.addEventListener("click", function () {
 
     clearInputs();
 
-    tempNumber = null;
     controllSaveBtnBehaviur(contactFormModal);
     resetContactObj();
+    tempNumber = null;
     document.querySelector("#noContactsCom").classList.add("d-none");
   }
 });
@@ -255,16 +255,19 @@ saveContactBtn.addEventListener("click", function () {
 // # Now we are going to build edit function that will do the following first we will add a spicail event listner for each edit button that print the number of the contact card first on console.
 
 function addEventListennerForEditBtn(editBtnElement) {
+  tempNumber = null;
   editBtnElement.addEventListener("click", function (e) {
     const contactCardEle = e.target.closest(".contact-card");
     let phoneNumberEle = contactCardEle.querySelector(".contact-num");
     let phoneNumber = phoneNumberEle.innerHTML.trim();
     let searchResult = searchForContactObjectByNum(totalContacts, phoneNumber);
+    console.log(searchResult);
     if (searchResult) {
       contactObject = JSON.parse(JSON.stringify(searchResult.objectData));
     }
 
     tempNumber = contactObject.phoneNum;
+    console.log(tempNumber);
     const contactFormModal = document.querySelector("#contactFormModal");
     clearInputSpanError(contactFormModal);
     var modalTitle = contactFormModal.querySelector("#contactFormModalLabel");
@@ -307,7 +310,7 @@ function addNewContactCard() {
     createContactCardComponent,
     contactObject
   );
-  deletbuttonEle = contactCardComEle;
+
   const favoriteBtnEle = contactCardComEle.querySelector(
     ".action-favorite-icon"
   );
@@ -339,7 +342,7 @@ function updateExistingContactCard() {
     "#contactsCardsContainer",
     tempNumber
   );
-
+  console.log(existedContactCardEle);
   if (!existedContactCardEle) {
     console.error("Could not find the card to replace in the DOM.");
     return;
@@ -380,6 +383,7 @@ function updateExistingContactCard() {
 
 function returnContactCardElementByphoneNum(parentID, phoneNum) {
   // #contactsCardsContainer
+  console.log(parentID);
   const container = document.querySelector(parentID);
   if (!container) return null;
   const contactsCardsEle = container.children;
@@ -388,6 +392,7 @@ function returnContactCardElementByphoneNum(parentID, phoneNum) {
       const contactPhoneNumber = contactCard
         .querySelector(".contact-num")
         .innerHTML.trim();
+      console.log(contactPhoneNumber, phoneNum);
       if (contactPhoneNumber === phoneNum) {
         return contactCard;
       }
@@ -572,6 +577,7 @@ function displayContactsCards() {
     addEventListennerForFavOrEmr("favorite", favoriteBtnEle);
     addEventListennerForFavOrEmr("emergency", emergencyBtnEle);
     addEventListennerForEditBtn(editContactCardBtn);
+    addEventTodeleteContactCardElement(deleteContactBtn);
 
     document.querySelector("#contactsCardsContainer").append(contactCardComEle);
   }
