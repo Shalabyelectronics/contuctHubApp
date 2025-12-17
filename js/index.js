@@ -388,7 +388,7 @@ function returnContactCardElementByphoneNum(parentID, phoneNum) {
       const contactPhoneNumber = contactCard
         .querySelector(".contact-num")
         .innerHTML.trim();
-      if (contactPhoneNumber === phoneNum.trim()) {
+      if (contactPhoneNumber === phoneNum) {
         return contactCard;
       }
     }
