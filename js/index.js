@@ -283,7 +283,8 @@ function addEventListennerForEditBtn(editBtnElement) {
     contactFormModal.querySelector("#emergencyContact").checked =
       contactObject.isEmergency;
     modalTitle.textContent = `Edit Contact Info for ${contactObject.fullName}`;
-    tempFavorateStatus = contactObject.isFavorite;
+    tempFavorateEditStatus = contactObject.isFavorite;
+    tempEmergencyEditStatus = contactObject.isEmergency;
     checkValidationInputs(contactObject);
   });
 }
@@ -725,85 +726,54 @@ function addEventListennerForFavOrEmr(btnName, btnElement) {
       totalContacts,
       phoneNumber
     );
-    let contactObj = totalContacts[searchResultInTotal.objectIndex];
-
+    contactObject = totalContacts[searchResultInTotal.objectIndex];
     if (btnName === "favorite") {
-      let searchResultInFavorite = searchForContactObjectByNum(
-        favoriteContacts,
-        phoneNumber
-      );
-
-      if (searchResultInFavorite) {
-        contactObj.isFavorite = false;
-        const favoriteMiniContactsList = favoritesContainerList.children;
-        for (favMiniContact of favoriteMiniContactsList) {
-          const faveMiniContactNumber = favMiniContact
-            .querySelector("#contactNum")
-            .innerHTML.trim();
-          if (faveMiniContactNumber === phoneNumber) {
-            favMiniContact.remove();
-          }
-        }
+      if (contactObject.isFavorite) {
+        contactObject.isFavorite = false;
+        const favoriteContactObj = searchForContactObjectByNum(
+          favoriteContacts,
+          contactObject.phoneNum
+        );
         btnImgBadge.classList.add("d-none");
         btnOptBadge.classList.add("d-none");
         activeBtnIcon.classList.remove("active-action");
-        favoriteContacts.splice(searchResultInFavorite.objectIndex, 1);
+        favoriteContacts.splice(favoriteContactObj.objectIndex, 1);
+        checkIfElementFavEmeChange(totalContacts);
         saveContactsToLocalStorage();
         updateCounterDomEle();
       } else {
-        contactObj.isFavorite = true;
-        const FavoritMiniContact = createMiniContactItem(
-          contactObj,
-          "call-icon-green"
-        );
-        favoritesContainerList.insertAdjacentHTML(
-          "beforeend",
-          FavoritMiniContact
-        );
+        contactObject.isFavorite = true;
+        checkIfElementFavEmeChange(totalContacts);
         btnImgBadge.classList.remove("d-none");
         btnOptBadge.classList.remove("d-none");
         activeBtnIcon.classList.add("active-action");
-        favoriteContacts.push(contactObj);
+        favoriteContacts.push(contactObject);
         saveContactsToLocalStorage();
         updateCounterDomEle();
       }
-    } else if (btnName === "emergency") {
-      let searchResultInEmergency = searchForContactObjectByNum(
-        emergencyContacts,
-        phoneNumber
-      );
+    }
+    if (btnName === "emergency") {
+      if (contactObject.isEmergency) {
+        contactObject.isEmergency = false;
+        let emergencyContactObj = searchForContactObjectByNum(
+          emergencyContacts,
+          contactObject.phoneNum
+        );
 
-      if (searchResultInEmergency) {
-        contactObj.isEmergency = false;
-        const emergencyMiniContactsList = emergencyContainerList.children;
-        for (const emrMiniContact of emergencyMiniContactsList) {
-          const emrMiniContactNumber = emrMiniContact
-            .querySelector("#contactNum")
-            .innerHTML.trim();
-          if (emrMiniContactNumber === phoneNumber) {
-            emrMiniContact.remove();
-          }
-        }
         btnImgBadge.classList.add("d-none");
         btnOptBadge.classList.add("d-none");
         activeBtnIcon.classList.remove("active-action");
-        emergencyContacts.splice(searchResultInEmergency.objectIndex, 1);
+        emergencyContacts.splice(emergencyContactObj.objectIndex, 1);
+        checkIfElementFavEmeChange(totalContacts);
         saveContactsToLocalStorage();
         updateCounterDomEle();
       } else {
-        contactObj.isEmergency = true;
-        const emergencyMiniContact = createMiniContactItem(
-          contactObj,
-          "call-icon-red"
-        );
-        emergencyContainerList.insertAdjacentHTML(
-          "beforeend",
-          emergencyMiniContact
-        );
+        contactObject.isEmergency = true;
+        checkIfElementFavEmeChange(totalContacts);
         btnImgBadge.classList.remove("d-none");
         btnOptBadge.classList.remove("d-none");
         activeBtnIcon.classList.add("active-action");
-        emergencyContacts.push(contactObj);
+        emergencyContacts.push(contactObject);
         saveContactsToLocalStorage();
         updateCounterDomEle();
       }

@@ -209,6 +209,8 @@ function createMiniContactItem(contactObj, iconTypeClass) {
 }
 
 function checkIfElementFavEmeChange(contactList) {
+  favoritesContainerList.innerHTML = "";
+  emergencyContainerList.innerHTML = "";
   if (contactList.length) {
     for (contactObject of contactList) {
       if (contactObject.isFavorite) {
